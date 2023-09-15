@@ -16,40 +16,35 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['prefix' => 'v1', 'as' => 'api.v1.', 'namespace' => '\App\\Http\\Controllers\\Api\\V1\\'], function () {
-    Route::post('/dependent-dropdown', ['uses' => 'DependentDropdownController@index', 'as' => 'dropdown']);
-    Route::get('all-products', ['uses' => 'ProductsController@index', 'as' => 'allProducts']);
-    Route::get('tags-products', ['uses' => 'ProductsController@TagsProducts', 'as' => 'TagsProducts']);
-    Route::get('product-reviews', ['uses' => 'ProductsController@HomeReviews', 'as' => 'HomeReviews']);
-    Route::get('single-product/{slug}', ['uses' => 'ProductsController@getProductDetail', 'as' => 'getProductDetail']);
-    Route::get('get-category-products/{slug}', ['uses' => '\App\Http\Controllers\CategoryController@getCategoryProduct', 'as' => 'getCategoryProduct']);
-    Route::get('get-sub-category-products/{slug}', ['uses' => '\App\Http\Controllers\CategoryController@getSubCategoryProduct', 'as' => 'getSubCategoryProduct']);
-    Route::get('product-categories', ['uses' => '\App\Http\Controllers\CategoryController@getCategories', 'as' => 'getCategories']);
-    Route::get('all-category-products', ['uses' => '\App\Http\Controllers\CategoryController@getProductsWithCategories', 'as' => 'getProductsWithCategories']);
-    Route::get('shipping_cost/{code}', ['uses' => 'OrderController@getZipCodePrice', 'as' => 'getZipCodePrice']);
-    Route::get('get-payment-methods', ['uses' => 'OrderController@getPaymentMethod', 'as' => 'getPaymentMethod']);
-    Route::get('get-shipping-methods', ['uses' => 'OrderController@getShippingMethod', 'as' => 'getShippingMethod']);
-    Route::post('make-order', ['uses' => 'OrderController@getOrder', 'as' => 'getOrder']);
-    Route::post('stripe-payment', ['uses' => 'OrderController@StripPayment', 'as' => 'StripPayment']);
-    Route::post('make-payment', ['uses' => 'OrderController@MakePayment', 'as' => 'MakePayment']);
-    // Route::post('/product-categories', ['uses' => 'DependentDropdownController@index', 'as' => 'productCategory']);
-    Route::get('getOrderDetails/{ordercode}', ['uses' => 'OrderController@getOrderDetails', 'as' => 'getOrderDetails']);
-    Route::get('get-order-status', ['uses' => 'OrderController@getOrderStatus', 'as' => 'getOrderStatus']);
-    Route::post('/register', [RegistrationController::class, 'store']);
-    Route::post('update-order', ['uses' => 'OrderController@updateORder', 'as' => 'updateORder']);
-    Route::get('get-product-attributes/{category_id}', ['uses' => 'ProductsController@getProductAttributes', 'as' => 'getProductAttributes']);
 
-    Route::post('search-products', ['uses' => 'ProductsController@searchByCategory', 'as' => 'searchByCategory']);
+    Route::post('flat-pack-assembly', ['uses' => 'BookingController@FlatPackAssemblyForm', 'as' => 'FlatPackAssemblyForm']);
+    // Route::post('/dependent-dropdown', ['uses' => 'DependentDropdownController@index', 'as' => 'dropdown']);
+    // Route::get('all-products', ['uses' => 'ProductsController@index', 'as' => 'allProducts']);
+    // Route::get('tags-products', ['uses' => 'ProductsController@TagsProducts', 'as' => 'TagsProducts']);
+    // Route::get('product-reviews', ['uses' => 'ProductsController@HomeReviews', 'as' => 'HomeReviews']);
+    // Route::get('single-product/{slug}', ['uses' => 'ProductsController@getProductDetail', 'as' => 'getProductDetail']);
+    // Route::get('get-category-products/{slug}', ['uses' => '\App\Http\Controllers\CategoryController@getCategoryProduct', 'as' => 'getCategoryProduct']);
+    // Route::get('get-sub-category-products/{slug}', ['uses' => '\App\Http\Controllers\CategoryController@getSubCategoryProduct', 'as' => 'getSubCategoryProduct']);
+    // Route::get('product-categories', ['uses' => '\App\Http\Controllers\CategoryController@getCategories', 'as' => 'getCategories']);
+    // Route::get('all-category-products', ['uses' => '\App\Http\Controllers\CategoryController@getProductsWithCategories', 'as' => 'getProductsWithCategories']);
+    // Route::get('shipping_cost/{code}', ['uses' => 'OrderController@getZipCodePrice', 'as' => 'getZipCodePrice']);
+    // Route::get('get-payment-methods', ['uses' => 'OrderController@getPaymentMethod', 'as' => 'getPaymentMethod']);
+    // Route::get('get-shipping-methods', ['uses' => 'OrderController@getShippingMethod', 'as' => 'getShippingMethod']);
+    // Route::post('make-order', ['uses' => 'OrderController@getOrder', 'as' => 'getOrder']);
+    // Route::post('stripe-payment', ['uses' => 'OrderController@StripPayment', 'as' => 'StripPayment']);
+    // Route::post('make-payment', ['uses' => 'OrderController@MakePayment', 'as' => 'MakePayment']);
+    // // Route::post('/product-categories', ['uses' => 'DependentDropdownController@index', 'as' => 'productCategory']);
+    // Route::get('getOrderDetails/{ordercode}', ['uses' => 'OrderController@getOrderDetails', 'as' => 'getOrderDetails']);
+    // Route::get('get-order-status', ['uses' => 'OrderController@getOrderStatus', 'as' => 'getOrderStatus']);
+    // Route::post('/register', [RegistrationController::class, 'store']);
+    // Route::post('update-order', ['uses' => 'OrderController@updateORder', 'as' => 'updateORder']);
+    // Route::get('get-product-attributes/{category_id}', ['uses' => 'ProductsController@getProductAttributes', 'as' => 'getProductAttributes']);
 
-    Route::get('slider', ['uses' => '\App\Http\Controllers\CategoryController@slider', 'as' => 'getCategories']);
+    // Route::post('search-products', ['uses' => 'ProductsController@searchByCategory', 'as' => 'searchByCategory']);
+
+    // Route::get('slider', ['uses' => '\App\Http\Controllers\CategoryController@slider', 'as' => 'getCategories']);
 
 
-    Route::post('forget-password', ['uses' => 'AuthController@submitForgetPasswordForm', 'as' => 'submitForgetPasswordForm']);
-    // Route::get('reset-password/{token}', ['uses' => 'AuthController@submitResetPasswordForm', 'as' => 'submitResetPasswordForm']);
-    Route::post('reset-password/', ['uses' => 'AuthController@submitResetPasswordForm', 'as' => 'submitResetPasswordForm']);
-    // Route::get('reset-password/{token}', ['uses' => 'AuthController@submitResetPasswordForm', 'as' => 'submitResetPasswordForm']);
-    // Route::post('reset-password', ['uses' => 'AuthController@updateORder', 'as' => 'submitForgetPasswordForm']);
-
-    //Route::post('/product-categories', ['uses' => 'DependentDropdownController@index', 'as' => 'productCategory']);
 
 
     Route::get('get-my-orders/', ['uses' => 'AuthController@getMyOrders', 'as' => 'getMyOrders']);
