@@ -82,17 +82,17 @@ class AuthController extends Controller
         //     now()->addMinutes(60),
         //     ['id' => $this->id]
         // );
-    
+
 
         $details = [
-			'first_name' =>  $request->first_name. ' ' .$request->last_name,
-			'title' => 'Welcome - Confirm Your Email!!',
-			'email' =>  $request->email,
-			'link' =>  'https://indigofur.com/user-verification?token='.$user->verification_token,
-		];
-		
+            'first_name' =>  $request->first_name . ' ' . $request->last_name,
+            'title' => 'Welcome - Confirm Your Email!!',
+            'email' =>  $request->email,
+            'link' =>  'https://indigofur.com/user-verification?token=' . $user->verification_token,
+        ];
 
-		\Mail::to($request->email)->send(new \App\Mail\RegisterAccount($details));
+
+        \Mail::to($request->email)->send(new \App\Mail\RegisterAccount($details));
 
         $msg = 'User Created Successfully';
 
@@ -141,25 +141,31 @@ class AuthController extends Controller
             }
 
 
-            $user = Customer::with('userDetails')->where('email', $request->email)->first();
+            $user = Customer::with('userDetails')->with('getRoleName')->where('email', $request->email)->first();
+
+            $userData = $user->toArray();
 
             // if (!$user || !Hash::check($request->password, $user->password)) {
             //     $result = ApiHelper::validation_error('Validation Error', ['Invalid Credentials']);
             //     // $result = ApiHelper::error('Invalid Credentials');
             //     return response()->json($result, 422);
             // }
+            
+            unset($userData['role_id']);
 
+            $userData['role'] = $userData['get_role_name']['name'];
+            unset($userData['get_role_name']);
+            
+                     
             if (!auth()->attempt($request->only(['email', 'password'])) && !$user || !Hash::check($request->password, $user->password)) {
                 $result = ApiHelper::validation_error('Validation Error', ['Invalid Credentials']);
                 // $result = ApiHelper::error('Invalid Credentials');
                 return response()->json($result, 422);
             }
 
-
             $accessToken = $user->createToken('authToken')->plainTextToken;
 
-            $loginUser['user'] = $user;
-
+            $loginUser['user'] = $userData;
 
             $loginUser['access_token'] = $accessToken;
 
@@ -232,37 +238,36 @@ class AuthController extends Controller
 
 
         $emailExits =  DB::table('password_resets')->where('email', '=', $request->email)->exists();
-            
-            $TokenUpdate = '';
+
+        $TokenUpdate = '';
         // dd($emailExits);
         $token = Str::random(64);
 
         if ($emailExits) {
-            
-             $details = [
-            'title' => 'Forget Password',
-            'body' => 'You can reset password from bellow link:',
-            'token' => $token
-        ];
+
+            $details = [
+                'title' => 'Forget Password',
+                'body' => 'You can reset password from bellow link:',
+                'token' => $token
+            ];
 
 
-        \Mail::to($request->email)->send(new \App\Mail\ForgetPassword($details));
-        
+            \Mail::to($request->email)->send(new \App\Mail\ForgetPassword($details));
         } else {
-            
+
             $TokenUpdate  = DB::table('password_resets')->insert([
                 'email' => $request->email,
                 'token' => $token,
             ]);
-            
-             $details = [
-            'title' => 'Forget Password',
-            'body' => 'You can reset password from bellow link:',
-            'token' => $token
-        ];
+
+            $details = [
+                'title' => 'Forget Password',
+                'body' => 'You can reset password from bellow link:',
+                'token' => $token
+            ];
 
 
-        \Mail::to($request->email)->send(new \App\Mail\ForgetPassword($details));
+            \Mail::to($request->email)->send(new \App\Mail\ForgetPassword($details));
         }
 
         $result = ApiHelper::success('We have e-mailed your password reset link!', $TokenUpdate);
@@ -345,7 +350,7 @@ class AuthController extends Controller
 
         if (!Hash::check($currentPassword, Auth::user()->password)) {
             // Passwords do not match, return an error
-            
+
             $result = ApiHelper::error('Current password is incorrect');
             return response()->json($result, 422);
         }
@@ -420,15 +425,15 @@ class AuthController extends Controller
                     'dob' => $request->dob,
                 ]
             );
-            
-            $userData = Customer::where('id', Auth::user()->id)->with('userDetails')->get();
-            
+
+        $userData = Customer::where('id', Auth::user()->id)->with('userDetails')->get();
+
 
         $result = ApiHelper::success('User Data has been updated', $userData);
 
         return response()->json($result, 200);
     }
-    
+
     public function updateShippingMethod(Request $request)
     {
         // dd($request->all());
@@ -448,9 +453,9 @@ class AuthController extends Controller
             $result = ApiHelper::validation_error('Validation Error', $validationData->errors());
             return response()->json($result, 422);
         }
-    
+
         $emailExits =  OrderShipping::where('user_id', '=', Auth::user()->id)->exists();
-        
+
         // dd($emailExits);
 
         // $user = OrderShipping::where('id', Auth::user()->id)
@@ -459,40 +464,37 @@ class AuthController extends Controller
         //             'name' => $request->first_name . ' ' . $request->last_name
         //         ]
         //     );
-        if($emailExits)
-        {
-            
+        if ($emailExits) {
+
             $AddShippigData = OrderShipping::where('user_id', Auth::user()->id)
-            ->update(
-                [
-                    'first_name' => $request->first_name,
-                    'last_name' => $request->last_name,
-                    'email' => $request->email,
-                    'phone' => $request->phone,
-                    'country' => $request->country,
-                    'state' => $request->state,
-                    'city' => $request->city,
-                    'address' => $request->address,
-                    'postal_code' => $request->postal_code,
-                    'company_name' => $request->company_name,
-                ]
-            );
-            
-        //   $UpdateShippigData = OrderShipping::where('user_id', Auth::user()->id)->pluck('order_no')->first();
-           
-           $UpdateShippigData = OrderShipping::where('user_id', Auth::user()->id)
-            ->select('*', 'order_no as order_no')
-            ->get()
-            ->map(function ($item) {
-                unset($item['order_no']);
-                return $item;
-            });
-           
+                ->update(
+                    [
+                        'first_name' => $request->first_name,
+                        'last_name' => $request->last_name,
+                        'email' => $request->email,
+                        'phone' => $request->phone,
+                        'country' => $request->country,
+                        'state' => $request->state,
+                        'city' => $request->city,
+                        'address' => $request->address,
+                        'postal_code' => $request->postal_code,
+                        'company_name' => $request->company_name,
+                    ]
+                );
+
+            //   $UpdateShippigData = OrderShipping::where('user_id', Auth::user()->id)->pluck('order_no')->first();
+
+            $UpdateShippigData = OrderShipping::where('user_id', Auth::user()->id)
+                ->select('*', 'order_no as order_no')
+                ->get()
+                ->map(function ($item) {
+                    unset($item['order_no']);
+                    return $item;
+                });
+
             $result = ApiHelper::success('Shipping address has been updated', $UpdateShippigData);
             return response()->json($result, 200);
-        }
-        else
-        {
+        } else {
             $AddShippigData = new OrderShipping();
             $AddShippigData->first_name = $request->first_name;
             $AddShippigData->last_name = $request->last_name;
@@ -506,34 +508,32 @@ class AuthController extends Controller
             $AddShippigData->postal_code = $request->postal_code;
             $AddShippigData->company_name = $request->company_name;
             $AddShippigData->save();
-            
+
             $result = ApiHelper::success('Shipping address has been added', $AddShippigData);
             return response()->json($result, 200);
         }
-        
-      
-            
+
+
+
 
         $result = '';
 
         return response()->json($result, 200);
     }
-    
+
     public function getShippingMethod()
     {
-       
-        
-       $UpdateShippigData = OrderShipping::where('user_id', Auth::user()->id)
-        ->select('*', 'order_no as order_no')
-        ->get()
-        ->map(function ($item) {
-            unset($item['order_no']);
-            return $item;
-        });
-       
+
+
+        $UpdateShippigData = OrderShipping::where('user_id', Auth::user()->id)
+            ->select('*', 'order_no as order_no')
+            ->get()
+            ->map(function ($item) {
+                unset($item['order_no']);
+                return $item;
+            });
+
         $result = ApiHelper::success('Success', $UpdateShippigData);
         return response()->json($result, 200);
-
-      
     }
 }

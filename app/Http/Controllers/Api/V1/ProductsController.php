@@ -15,7 +15,7 @@ use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
 use DB;
 use Illuminate\Pagination\Paginator;
-
+use Illuminate\Support\Facades\Auth;
 class ProductsController extends Controller
 {
 
@@ -25,9 +25,47 @@ class ProductsController extends Controller
 		$products = Product::published()->with('category')->with('subcategory')->orderBy('id', 'DESC')->take(10)->get();
 
 		$result = ApiHelper::success('All Products', $products);
+		
 		return response()->json($result, 200);
 	}
 
+	public function getFurnitureItems()
+	{
+		if(Auth::user()->role_id == 7)
+		{
+			$products = ProductCategory::where('status','PUBLISHED')->with('category_products')->where('name','Furniture Assembly List')->orderBy('created_at', 'DESC')->get();
+		
+			$result = ApiHelper::success('All Furniture Products', $products);
+			return response()->json($result, 200);
+		}
+		else
+		{
+			$result = ApiHelper::success('Not Found', []);
+			return response()->json($result, 200);
+		}
+		
+	}
+
+	
+	public function getBeddingItems()
+	{
+		// return  Auth::user()->role_id == 7;
+
+		if(Auth::user()->role_id == 6)
+		{
+			$products = ProductCategory::where('status','PUBLISHED')->where('name','Bedding Assembly List')->orderBy('created_at', 'DESC')->get();
+		
+			$result = ApiHelper::success('All Bedding Products', $products);
+			return response()->json($result, 200);
+		}
+		else
+		{
+			$result = ApiHelper::success('Not Found', []);
+			return response()->json($result, 200);
+		}
+
+
+	}
 
 	public function getProductDetail($slug)
 	{

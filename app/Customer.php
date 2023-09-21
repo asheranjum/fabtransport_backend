@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\UserDetail;
+use App\Role;
 class Customer extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -56,4 +57,12 @@ class Customer extends Authenticatable
 	{
 		return $this->hasOne(UserDetail::class,'user_id');
 	}
+
+
+    
+    public function getRoleName()
+	{
+		return $this->belongsTo(Role::class,'role_id');
+	}
+
 }

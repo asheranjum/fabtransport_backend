@@ -59,11 +59,14 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.', 'namespace' => '\App\\Http\\C
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@getUserData');
+        Route::get('get-furniture-prodcuts', ['uses' => 'ProductsController@getFurnitureItems', 'as' => 'getFurnitureItems']);
+        Route::get('get-bedding-prodcuts', ['uses' => 'ProductsController@getBeddingItems', 'as' => 'getBeddingItems']);
         Route::post('update-profile', 'AuthController@updateProfile');
         Route::post('update-shipping-method', 'AuthController@updateShippingMethod');
         Route::get('get-shipping-method', 'AuthController@getShippingMethod');
         Route::get('get-my-orders/', ['uses' => 'AuthController@getMyOrders', 'as' => 'getMyOrders']);
         Route::post('change-passowrd/', ['uses' => 'AuthController@changePassowrd', 'as' => 'changePassowrd']);
+        
     });
 });
  
