@@ -33,7 +33,7 @@ class ProductsController extends Controller
 	{
 		if(Auth::user()->role_id == 7)
 		{
-			$products = ProductCategory::where('status','PUBLISHED')->with('category_products')->where('name','Furniture Assembly List')->orderBy('created_at', 'DESC')->get();
+			$products = ProductCategory::where('status','PUBLISHED')->with('category_products')->where('name','Furniture Assembly List')->orderBy('created_at', 'DESC')->first();
 		
 			$result = ApiHelper::success('All Furniture Products', $products);
 			return response()->json($result, 200);
@@ -53,7 +53,7 @@ class ProductsController extends Controller
 
 		if(Auth::user()->role_id == 6)
 		{
-			$products = ProductCategory::where('status','PUBLISHED')->where('name','Bedding Assembly List')->orderBy('created_at', 'DESC')->get();
+			$products = ProductCategory::where('status','PUBLISHED')->with('category_products')->where('name','Bedding Assembly List')->orderBy('created_at', 'DESC')->first();
 		
 			$result = ApiHelper::success('All Bedding Products', $products);
 			return response()->json($result, 200);
