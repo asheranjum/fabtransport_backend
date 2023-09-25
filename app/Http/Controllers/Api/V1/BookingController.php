@@ -20,7 +20,7 @@ class BookingController extends Controller
 	public function FlatPackAssemblyForm(Request $request)
 	{
 
-		// dd($request->all());
+		// return($request->all());
 		$validator = Validator::make($request->all(), [
 			'items_need' => 'required',
 			'need_assembling' => 'required',
