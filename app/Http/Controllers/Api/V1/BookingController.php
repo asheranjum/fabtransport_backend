@@ -28,6 +28,7 @@ class BookingController extends Controller
 			'furniture_assembled' => 'required',
 			'name' => 'required',
 			'email' => 'required',
+			'phone' => 'required',
 			'city' => 'required',
 			'postal' => 'required',
 			'address' => 'required',
@@ -55,12 +56,15 @@ class BookingController extends Controller
 		$PostData->furniture_assembled = $request->furniture_assembled;
 		$PostData->name = $request->name;
 		$PostData->email = $request->email;
+		$PostData->phone = $request->phone;
 		$PostData->city = $request->city;
 		$PostData->postal = $request->postal;
 		$PostData->address = $request->address;
+
 		$PostData->bname = $request->bname;
 		$PostData->bemail = $request->bemail;
 		$PostData->baddress = $request->baddress;
+		
 		$PostData->save();
 
 
@@ -74,11 +78,10 @@ class BookingController extends Controller
 
 		$validator = Validator::make($request->all(), [
 
-			'items_need' => 'required',
+			'pick_up_location' => 'required',
 			'delivery_location' => 'required',
 			'deliveries_off_goods' => 'required',
 			'the_delivery_requires' => 'required',
-			'pick_up_name' => 'required',
 			'pick_up_name' => 'required',
 			'pick_up_email' => 'required',
 			'pick_up_phone' => 'required',
@@ -92,6 +95,7 @@ class BookingController extends Controller
 			'delivery_postal' => 'required',
 			'delivery_address' => 'required',
 			'date' => 'required',
+
 			'bname' => 'required',
 			'bemail' => 'required',
 			'baddress' => 'required',
@@ -154,7 +158,7 @@ class BookingController extends Controller
 			'postal' => 'required',
 			'address' => 'required',
 			'bname' => 'required',
-			'bemail' => 'required',
+			'beamil' => 'required',
 			'baddress' => 'required',
 			
 		]);
@@ -181,7 +185,7 @@ class BookingController extends Controller
 		$PostData->city = $request->city;
 		$PostData->postal = $request->postal;
 		$PostData->bname = $request->bname;
-		$PostData->bemail = $request->bemail;
+		$PostData->beamil = $request->beamil;
 		$PostData->baddress = $request->baddress;
 		
 		$PostData->save();
