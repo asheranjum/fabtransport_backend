@@ -26,13 +26,13 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.', 'namespace' => '\App\\Http\\C
     // Route::post('/dependent-dropdown', ['uses' => 'DependentDropdownController@index', 'as' => 'dropdown']);
     // Route::get('all-products', ['uses' => 'ProductsController@index', 'as' => 'allProducts']);
     // Route::get('tags-products', ['uses' => 'ProductsController@TagsProducts', 'as' => 'TagsProducts']);
-    // Route::get('product-reviews', ['uses' => 'ProductsController@HomeReviews', 'as' => 'HomeReviews']);
+    Route::get('product-reviews', ['uses' => 'ProductsController@HomeReviews', 'as' => 'HomeReviews']);
     // Route::get('single-product/{slug}', ['uses' => 'ProductsController@getProductDetail', 'as' => 'getProductDetail']);
     // Route::get('get-category-products/{slug}', ['uses' => '\App\Http\Controllers\CategoryController@getCategoryProduct', 'as' => 'getCategoryProduct']);
     // Route::get('get-sub-category-products/{slug}', ['uses' => '\App\Http\Controllers\CategoryController@getSubCategoryProduct', 'as' => 'getSubCategoryProduct']);
     // Route::get('product-categories', ['uses' => '\App\Http\Controllers\CategoryController@getCategories', 'as' => 'getCategories']);
     // Route::get('all-category-products', ['uses' => '\App\Http\Controllers\CategoryController@getProductsWithCategories', 'as' => 'getProductsWithCategories']);
-    // Route::get('shipping_cost/{code}', ['uses' => 'OrderController@getZipCodePrice', 'as' => 'getZipCodePrice']);
+    Route::get('shipping_cost/{code}', ['uses' => 'OrderController@getZipCodePrice', 'as' => 'getZipCodePrice']);
     // Route::get('get-payment-methods', ['uses' => 'OrderController@getPaymentMethod', 'as' => 'getPaymentMethod']);
     // Route::get('get-shipping-methods', ['uses' => 'OrderController@getShippingMethod', 'as' => 'getShippingMethod']);
     // Route::post('make-order', ['uses' => 'OrderController@getOrder', 'as' => 'getOrder']);

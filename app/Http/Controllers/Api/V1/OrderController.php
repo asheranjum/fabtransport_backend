@@ -128,7 +128,7 @@ class OrderController extends Controller
 
 	public function getZipCodePrice($code)
 	{
-
+		
 		$getShippingPrice = ShippingPostcode::published()->where('code', $code)->first();
 
 		$result = ApiHelper::success('Shipping Cost', $getShippingPrice);
