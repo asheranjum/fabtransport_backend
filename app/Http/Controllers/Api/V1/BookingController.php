@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
 use App\FlatPackAssembly;
 use App\Delivery;
 use App\HouseMoving;
@@ -22,23 +23,21 @@ class BookingController extends Controller
 
 		// return($request->all());
 		$validator = Validator::make($request->all(), [
+
 			'items_need' => 'required',
 			'need_assembling' => 'required',
 			'additional_services' => 'required',
 			'furniture_assembled' => 'required',
+			'address' => 'required',
 			'name' => 'required',
 			'email' => 'required',
 			'phone' => 'required',
 			'city' => 'required',
-			'postal' => 'required',
-			'address' => 'required',
-			'bname' => 'required',
-			'bemail' => 'required',
-			'baddress' => 'required',
-
-			// 'email' => 'required|email|unique:users',
-			// 'password' => 'required|min:6',
-			// 'c_password' => 'required|same:password',
+			'postal_code' => 'required',
+			
+			'different_name' => 'required',
+			'different_email' => 'required',
+			'different_address' => 'required',
 
 		]);
 
@@ -54,16 +53,16 @@ class BookingController extends Controller
 		$PostData->need_assembling = $request->need_assembling;
 		$PostData->additional_services = $request->additional_services;
 		$PostData->furniture_assembled = $request->furniture_assembled;
+		$PostData->address = $request->address;
 		$PostData->name = $request->name;
 		$PostData->email = $request->email;
 		$PostData->phone = $request->phone;
 		$PostData->city = $request->city;
-		$PostData->postal = $request->postal;
-		$PostData->address = $request->address;
+		$PostData->postal_code = $request->postal_code;
 
-		$PostData->bname = $request->bname;
-		$PostData->bemail = $request->bemail;
-		$PostData->baddress = $request->baddress;
+		$PostData->different_name = $request->different_name;
+		$PostData->different_email = $request->different_email;
+		$PostData->different_address = $request->different_address;
 		
 		$PostData->save();
 
@@ -80,25 +79,25 @@ class BookingController extends Controller
 
 			'pick_up_location' => 'required',
 			'delivery_location' => 'required',
-			'deliveries_off_goods' => 'required',
+			'delivery_to' => 'required',
 			'the_delivery_requires' => 'required',
 			'pick_up_name' => 'required',
 			'pick_up_email' => 'required',
 			'pick_up_phone' => 'required',
 			'pick_up_city' => 'required',
-			'pick_up_postal' => 'required',
-			'pick_up__address' => 'required',
+			'pick_up_postal_code' => 'required',
+			'pick_up_address' => 'required',
 			'delivery_name' => 'required',
 			'delivery_email' => 'required',
 			'delivery_phone' => 'required',
 			'delivery_city' => 'required',
-			'delivery_postal' => 'required',
+			'delivery_postal_code' => 'required',
 			'delivery_address' => 'required',
 			'date' => 'required',
 
-			'bname' => 'required',
-			'bemail' => 'required',
-			'baddress' => 'required',
+			'different_name' => 'required',
+			'different_email' => 'required',
+			'different_address' => 'required',
 			
 		]);
 
@@ -112,24 +111,26 @@ class BookingController extends Controller
 
 		$PostData->pick_up_location = $request->pick_up_location;
 		$PostData->delivery_location = $request->delivery_location;
-		$PostData->deliveries_off_goods = $request->deliveries_off_goods;
+		$PostData->delivery_to = $request->delivery_to;
 		$PostData->the_delivery_requires = $request->the_delivery_requires;
 		$PostData->pick_up_name = $request->pick_up_name;
 		$PostData->pick_up_email = $request->pick_up_email;
 		$PostData->pick_up_phone = $request->pick_up_phone;
 		$PostData->pick_up_city = $request->pick_up_city;
-		$PostData->pick_up_postal = $request->pick_up_postal;
-		$PostData->pick_up__address = $request->pick_up__address;
+		$PostData->pick_up_postal_code = $request->pick_up_postal_code;
+		$PostData->pick_up_address = $request->pick_up_address;
 		$PostData->delivery_name = $request->delivery_name;
 		$PostData->delivery_email = $request->delivery_email;
 		$PostData->delivery_phone = $request->delivery_phone;
 		$PostData->delivery_city = $request->delivery_city;
-		$PostData->delivery_postal = $request->delivery_postal;
+		$PostData->delivery_postal_code = $request->delivery_postal_code;
 		$PostData->delivery_address = $request->delivery_address;
 		$PostData->date = $request->date;
-		$PostData->bname = $request->bname;
-		$PostData->bemail = $request->bemail;
-		$PostData->baddress = $request->baddress;
+
+		$PostData->different_name = $request->different_name;
+		$PostData->different_email = $request->different_email;
+		$PostData->different_address = $request->different_address;
+
 		$PostData->save();
 
 
@@ -149,17 +150,17 @@ class BookingController extends Controller
 			'moving_to' => 'required',
 			'bedrooms' => 'required',
 			'other_rooms' => 'required',
-			'special_item' => 'required',
 			'date' => 'required',
 			'name' => 'required',
 			'email' => 'required',
 			'phone' => 'required',
 			'city' => 'required',
-			'postal' => 'required',
 			'address' => 'required',
-			'bname' => 'required',
-			'beamil' => 'required',
-			'baddress' => 'required',
+			'postal_code' => 'required',
+			
+			'different_name' => 'required',
+			'different_email' => 'required',
+			'different_address' => 'required',
 			
 		]);
 
@@ -177,16 +178,18 @@ class BookingController extends Controller
 		$PostData->moving_to = $request->moving_to;
 		$PostData->bedrooms = $request->bedrooms;
 		$PostData->other_rooms = $request->other_rooms;
-		$PostData->special_item	 = $request->special_item	;
+		$PostData->specialty_item = $request->specialty_item;
 		$PostData->date = $request->date;
 		$PostData->name = $request->name;
 		$PostData->email = $request->email;
-		$PostData->phone = $request->phone	;
+		$PostData->phone = $request->phone;
 		$PostData->city = $request->city;
-		$PostData->postal = $request->postal;
-		$PostData->bname = $request->bname;
-		$PostData->beamil = $request->beamil;
-		$PostData->baddress = $request->baddress;
+		$PostData->postal_code = $request->postal_code;
+		$PostData->address = $request->address;
+
+		$PostData->different_name = $request->different_name;
+		$PostData->different_email = $request->different_email;
+		$PostData->different_address = $request->different_address;
 		
 		$PostData->save();
 
