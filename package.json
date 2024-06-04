@@ -12,6 +12,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "@stripe/react-stripe-js": "^2.1.0"
+        "@stripe/react-stripe-js": "^2.1.0",
+        "laravel-echo": "^1.15.3",
+        "socket.io-client": "^4.7.2"
     }
 }

@@ -22,30 +22,30 @@ class BookingController extends Controller
 	{
 
 		// return($request->all());
-		$validator = Validator::make($request->all(), [
+		// $validator = Validator::make($request->all(), [
 
-			'items_need' => 'required',
-			'need_assembling' => 'required',
-			'additional_services' => 'required',
-			'furniture_assembled' => 'required',
-			'address' => 'required',
-			'name' => 'required',
-			'email' => 'required',
-			'phone' => 'required',
-			'city' => 'required',
-			'postal_code' => 'required',
+		// 	'items_need' => 'required',
+		// 	'need_assembling' => 'required',
+		// 	'additional_services' => 'required',
+		// 	'furniture_assembled' => 'required',
+		// 	'address' => 'required',
+		// 	'name' => 'required',
+		// 	'email' => 'required',
+		// 	'phone' => 'required',
+		// 	'city' => 'required',
+		// 	'postal_code' => 'required',
 			
-			'different_name' => 'required',
-			'different_email' => 'required',
-			'different_address' => 'required',
+		// 	'different_name' => 'required',
+		// 	'different_email' => 'required',
+		// 	'different_address' => 'required',
 
-		]);
+		// ]);
 
 
-		if ($validator->fails()) {
-			$result = ApiHelper::validation_error('Validation Error', $validator->errors()->all());
-			return response()->json($result, 422);
-		}
+		// if ($validator->fails()) {
+		// 	$result = ApiHelper::validation_error('Validation Error', $validator->errors()->all());
+		// 	return response()->json($result, 422);
+		// }
 
 		$PostData = new FlatPackAssembly();
 
@@ -75,37 +75,37 @@ class BookingController extends Controller
 	public function DeliveryForm(Request $request)
 	{
 
-		$validator = Validator::make($request->all(), [
+		// $validator = Validator::make($request->all(), [
 
-			'pick_up_location' => 'required',
-			'delivery_location' => 'required',
-			'delivery_to' => 'required',
-			'the_delivery_requires' => 'required',
-			'pick_up_name' => 'required',
-			'pick_up_email' => 'required',
-			'pick_up_phone' => 'required',
-			'pick_up_city' => 'required',
-			'pick_up_postal_code' => 'required',
-			'pick_up_address' => 'required',
-			'delivery_name' => 'required',
-			'delivery_email' => 'required',
-			'delivery_phone' => 'required',
-			'delivery_city' => 'required',
-			'delivery_postal_code' => 'required',
-			'delivery_address' => 'required',
-			'date' => 'required',
+		// 	'pick_up_location' => 'required',
+		// 	'delivery_location' => 'required',
+		// 	'delivery_to' => 'required',
+		// 	'the_delivery_requires' => 'required',
+		// 	'pick_up_name' => 'required',
+		// 	'pick_up_email' => 'required',
+		// 	'pick_up_phone' => 'required',
+		// 	'pick_up_city' => 'required',
+		// 	'pick_up_postal_code' => 'required',
+		// 	'pick_up_address' => 'required',
+		// 	'delivery_name' => 'required',
+		// 	'delivery_email' => 'required',
+		// 	'delivery_phone' => 'required',
+		// 	'delivery_city' => 'required',
+		// 	'delivery_postal_code' => 'required',
+		// 	'delivery_address' => 'required',
+		// 	'date' => 'required',
 
-			'different_name' => 'required',
-			'different_email' => 'required',
-			'different_address' => 'required',
+		// 	'different_name' => 'required',
+		// 	'different_email' => 'required',
+		// 	'different_address' => 'required',
 			
-		]);
+		// ]);
 
 
-		if ($validator->fails()) {
-			$result = ApiHelper::validation_error('Validation Error', $validator->errors()->all());
-			return response()->json($result, 422);
-		}
+		// if ($validator->fails()) {
+		// 	$result = ApiHelper::validation_error('Validation Error', $validator->errors()->all());
+		// 	return response()->json($result, 422);
+		// }
 
 		$PostData = new Delivery();
 
@@ -142,33 +142,33 @@ class BookingController extends Controller
 	public function HouseMovingForm(Request $request)
 	{
 
-		$validator = Validator::make($request->all(), [
+		// $validator = Validator::make($request->all(), [
 			
-			'moving_from_location' => 'required',
-			'moving_to_location' => 'required',
-			'moving_from' => 'required',
-			'moving_to' => 'required',
-			'bedrooms' => 'required',
-			'other_rooms' => 'required',
-			'date' => 'required',
-			'name' => 'required',
-			'email' => 'required',
-			'phone' => 'required',
-			'city' => 'required',
-			'address' => 'required',
-			'postal_code' => 'required',
+		// 	'moving_from_location' => 'required',
+		// 	'moving_to_location' => 'required',
+		// 	'moving_from' => 'required',
+		// 	'moving_to' => 'required',
+		// 	'bedrooms' => 'required',
+		// 	'other_rooms' => 'required',
+		// 	'date' => 'required',
+		// 	'name' => 'required',
+		// 	'email' => 'required',
+		// 	'phone' => 'required',
+		// 	'city' => 'required',
+		// 	'address' => 'required',
+		// 	'postal_code' => 'required',
 			
-			'different_name' => 'required',
-			'different_email' => 'required',
-			'different_address' => 'required',
+		// 	'different_name' => 'required',
+		// 	'different_email' => 'required',
+		// 	'different_address' => 'required',
 			
-		]);
+		// ]);
 
 
-		if ($validator->fails()) {
-			$result = ApiHelper::validation_error('Validation Error', $validator->errors()->all());
-			return response()->json($result, 422);
-		}
+		// if ($validator->fails()) {
+		// 	$result = ApiHelper::validation_error('Validation Error', $validator->errors()->all());
+		// 	return response()->json($result, 422);
+		// }
 
 		$PostData = new HouseMoving();
 
