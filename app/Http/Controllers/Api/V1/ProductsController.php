@@ -29,41 +29,105 @@ class ProductsController extends Controller
 		return response()->json($result, 200);
 	}
 
-	public function getFurnitureItems()
-	{
-		if(Auth::user()->role_id == 7)
-		{
-			$products = ProductCategory::where('status','PUBLISHED')->with('category_products')->where('name','Furniture Assembly List')->orderBy('created_at', 'DESC')->first();
+// 	public function getFurnitureItems()
+// 	{
+// 		if(Auth::user()->role_id == 7)
+// 		{
+// 			$products = ProductCategory::where('status','PUBLISHED')->with('category_products')->where('name','Furniture Assembly List')->orderBy('created_at', 'DESC')->first();
 		
-			$result = ApiHelper::success('All Furniture Products', $products);
-			return response()->json($result, 200);
-		}
-		else
-		{
-			$result = ApiHelper::success('Not Found', []);
-			return response()->json($result, 200);
-		}
+// 			$result = ApiHelper::success('All Furniture Products', $products);
+// 			return response()->json($result, 200);
+// 		}
+// 		else
+// 		{
+// 			$result = ApiHelper::success('Not Found', []);
+// 			return response()->json($result, 200);
+// 		}
+		
+// 	}
+	
+	public function getFurnitureItems(Request $request)
+	{
+
+         // Assuming you pass a 'search' parameter for the search functionality
+            $search = $request->input('search', '');
+        
+            // if (Auth::user()->role_id == 6) {
+                // First, get the category
+                $category = ProductCategory::where('status', 'PUBLISHED')
+                                           ->where('name', 'Furniture Assembly List')
+                                           ->first();
+        
+                if ($category) {
+                    // Apply search and pagination on the products of this category
+                    $products = $category->category_products()
+                                         ->where('name', 'LIKE', "%$search%") // Assuming 'product_name' is the field you want to search
+                                         ->with('variations') // Eager load the variations
+                                         ->orderBy('created_at', 'DESC')
+                                         ->paginate(10); // 10 products per page
+        
+                    $result = ApiHelper::success('All Bedding Products', $products);
+                    return response()->json($result, 200);
+                } else {
+                    $result = ApiHelper::success('Category Not Found', []);
+                    return response()->json($result, 200);
+                }
+            // } else {
+            //     $result = ApiHelper::success('Not Authorized', []);
+            //     return response()->json($result, 403);
+            // }
+   
 		
 	}
 
 	
-	public function getBeddingItems()
+	public function getBeddingItems(Request $request)
 	{
 		// return  Auth::user()->role_id == 7;
 
-		if(Auth::user()->role_id == 6)
-		{
-			$products = ProductCategory::where('status','PUBLISHED')->with('category_products')->where('name','Bedding Assembly List')->orderBy('created_at', 'DESC')->first();
+// 		if(Auth::user()->role_id == 6)
+// 		{
+// 			$products = ProductCategory::where('status','PUBLISHED')->with('category_products')->where('name','Bedding Assembly List')->orderBy('created_at', 'DESC')->first();
 		
-			$result = ApiHelper::success('All Bedding Products', $products);
-			return response()->json($result, 200);
-		}
-		else
-		{
-			$result = ApiHelper::success('Not Found', []);
-			return response()->json($result, 200);
-		}
+// 			$result = ApiHelper::success('All Bedding Products', $products);
+// 			return response()->json($result, 200);
+// 		}
+// 		else
+// 		{
+// 			$result = ApiHelper::success('Not Found', []);
+// 			return response()->json($result, 200);
+// 		}
 
+
+// Assuming you pass a 'search' parameter for the search functionality
+            $search = $request->input('search', '');
+        
+            // if (Auth::user()->role_id == 6) {
+                // First, get the category
+                $category = ProductCategory::where('status', 'PUBLISHED')
+                                           ->where('name', 'Bedding Assembly List')
+                                           ->first();
+        
+                if ($category) {
+                    // Apply search and pagination on the products of this category
+                    $products = $category->category_products()
+                                         ->where('name', 'LIKE', "%$search%") // Assuming 'product_name' is the field you want to search
+                                         ->with('variations') // Eager load the variations
+                                         ->orderBy('created_at', 'DESC')
+                                         ->paginate(10); // 10 products per page
+        
+                    $result = ApiHelper::success('All Bedding Products', $products);
+                    return response()->json($result, 200);
+                } else {
+                    $result = ApiHelper::success('Category Not Found', []);
+                    return response()->json($result, 200);
+                }
+            // } else {
+            //     $result = ApiHelper::success('Not Authorized', []);
+            //     return response()->json($result, 403);
+            // }
+   
+   
 
 	}
 

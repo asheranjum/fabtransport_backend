@@ -21,7 +21,7 @@
 
 @section('content')
     <div class="page-content edit-add container-fluid">
-        <form role="form" class="form-edit-add" action="{{ $edit ? route('voyager.'.$dataType->slug.'.update', $dataTypeContent->getKey()) : route('voyager.'.$dataType->slug.'.store') }}" method="POST" enctype="multipart/form-data">
+        <form role="form" class="form-edit-add" id="removeVVVV" action="{{ $edit ? route('voyager.'.$dataType->slug.'.update', $dataTypeContent->getKey()) : route('voyager.'.$dataType->slug.'.store') }}" method="POST" enctype="multipart/form-data">
         
           <!-- PUT Method if we are editing -->
             @if($edit)
@@ -171,11 +171,11 @@
                                     <input class="form-control" name="SKU" value="{{ $dataTypeContent->SKU ?? '' }}" >
                                 </div>
                                 
-                                <div class="form-group">
-                                    <label for="meta_description">Price</label>
+                                <!--<div class="form-group">-->
+                                <!--    <label for="meta_description">Price</label>-->
                                
-                                    <input class="form-control" name="regular_price" value="{{ $dataTypeContent->regular_price ?? '' }}" >
-                                </div>
+                                <!--    <input class="form-control" name="regular_price" value="{{ $dataTypeContent->regular_price ?? '' }}" >-->
+                                <!--</div>-->
                                 
                                 
                             
@@ -189,6 +189,8 @@
                                     </select>
                                 </div>
                                 
+                                
+                             
                                 
                               
                                 
@@ -244,6 +246,55 @@
                                 
                             @endforeach
                               
+                              
+<!--                                 <button type="button" class="btn btn-primary w-100" id="add-variation-button">Add Variation</button>-->
+<!--<div id="variations-container"></div>-->
+
+@php  
+
+ $productId = request()->route('product'); // 'product' is the name of the route parameter
+    // Or, if the route parameter is not named, you can use the segment method
+   
+    $productId = request()->segment(3);
+    
+    
+    $variations = DB::table('product_variations')->where('product_id',$productId)->get(); 
+    
+@endphp
+
+<button type="button" class="btn btn-primary w-100" id="add-variation-button">Add Variation</button>
+
+@if(isset($variations) && $variations->count() > 0)
+    <h3>Variations</h3>
+@endif
+
+<table class="table table-bordered" id="variations-container">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th></th> {{-- Actions column --}}
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($variations as $variation)
+            <tr id="variation-row-{{ $variation->id }}">
+                <td>
+                    <input type="text" name="variations[{{ $variation->id }}][name]" value="{{ $variation->name }}" class="form-control" />
+                </td>
+                <td>
+                    <input type="number" name="variations[{{ $variation->id }}][price]" value="{{ $variation->price }}" class="form-control" />
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger" onclick="removeVariationRow('variation-row-{{ $variation->id }}')">Remove</button>
+                </td>
+            </tr>
+        @endforeach
+
+    </tbody>
+</table>
+
+
                                 
                             </div>
                         </div>
@@ -425,5 +476,84 @@
             });
             $('[data-toggle="tooltip"]').tooltip();
         });
+        
+//         document.addEventListener('DOMContentLoaded', function() {
+//     const variationsContainer = document.getElementById('variations-container');
+//     const addVariationButton = document.getElementById('add-variation-button');
+
+//     addVariationButton.addEventListener('click', function() {
+//         const newIndex = variationsContainer.children.length;
+//         const variationGroup = document.createElement('div');
+//         variationGroup.innerHTML = `
+//             <div class="variation-group" id="variation-group-${newIndex}">
+//                 <input type="text" name="variations[${newIndex}][name]" placeholder="Variation Name" />
+//                 <input type="number" name="variations[${newIndex}][price]" placeholder="Price" step="0.01" />
+//                 <button type="button" onclick="removeVariation(${newIndex})">Remove</button>
+//             </div>
+//         `;
+//         variationsContainer.appendChild(variationGroup);
+//     });
+// });
+
+// function removeVariation(index) {
+//     const variationGroup = document.getElementById('variation-group-' + index);
+//     variationGroup.remove();
+// }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const variationsContainer = document.querySelector('#variations-container tbody');
+    const addVariationButton = document.getElementById('add-variation-button');
+
+    addVariationButton.addEventListener('click', function() {
+        const newIndex = variationsContainer.children.length;
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>
+                <input type="text" name="variations[new_${newIndex}][name]" placeholder="Variation Name" class="form-control" />
+            </td>
+            <td>
+                <input type="number" name="variations[new_${newIndex}][price]" placeholder="Price" step="0.01" class="form-control" />
+            </td>
+            <td>
+                <button type="button"  class="btn btn-danger" onclick="removeVariation(this)">Remove</button>
+            </td>
+        `;
+        variationsContainer.appendChild(newRow);
+    });
+});
+
+function removeVariation(element) {
+    element.closest('tr').remove();
+}
+
+// function removeVariationRow(rowId) {
+//     const row = document.getElementById(rowId);
+//     if (row) {
+//         row.remove();
+//     }
+// }
+
+function removeVariationRow(rowId) {
+    const variationId = rowId.split('-').pop(); // Extract the variation ID from the rowId
+    const row = document.getElementById(rowId);
+    
+    if (row) {
+        // Create a hidden input for marking the variation as deleted
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'deleted_variations[]';
+        input.value = variationId;
+
+        // Append the hidden input to the form
+        const form = document.getElementById('removeVVVV'); // Replace with your actual form ID
+        form.appendChild(input);
+
+        // Remove the row from the table
+        row.remove();
+    }
+}
+
+
     </script>
 @stop

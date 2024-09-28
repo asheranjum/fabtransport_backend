@@ -31,7 +31,10 @@ class ProductCategory extends Model
 
     public function getSubCategory()
     {
-        return $this->hasMany(ProductSubCategory::class,'category_id')->where('status','PUBLISHED');
+        // return $this->hasMany(ProductSubCategory::class,'category_id')->where('status','PUBLISHED');
+    
+        
+          return $this->hasMany(self::class,'parent_id')->where('status','PUBLISHED');
     }
 
 
@@ -60,4 +63,10 @@ class ProductCategory extends Model
     // {
     //     return $this->hasMany(ProductCategory::class, 'category_id');
     // }
+    
+    
+        public function parentId()
+    {
+        return $this->belongsTo(self::class);
+    }
 }

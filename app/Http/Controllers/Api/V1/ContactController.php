@@ -11,6 +11,8 @@ use Illuminate\Support\Str;
 use DB;
 use Validator;
 use Illuminate\Pagination\Paginator;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class ContactController extends Controller
 {
@@ -50,5 +52,44 @@ class ContactController extends Controller
 		return response()->json($result, 200);
 
 	}
+	
+	
+public function checkNewSubmissions(Request $request)
+{
+    // Retrieve the last check time from the session, or default to a time far in the past
+    $lastCheck = $request->session()->get('last_check', Carbon::now()->subYear());
+
+    // Retrieve only the new submissions since the last check
+    $newSubmissions = Contact::where('created_at', '>', $lastCheck)
+                             ->orderBy('created_at', 'desc')
+                             ->get();
+
+   
+
+    // If you only want the latest record, you can do:
+    $latestSubmission = $newSubmissions->first();
+
+
+ // Update the last check time in the session
+    $request->session()->put('last_check', Carbon::now());
+    
+    // Prepare the data to be returned
+    $data = [
+        'new' => $newSubmissions,         // All new submissions
+        'latest' => $latestSubmission,    // Only the latest submission
+        'lastCheck' => $lastCheck         // The time of the last check
+    ];
+    
+    
+      Log::debug('Last check: ' . $lastCheck);
+    Log::debug('New submissions count: ' . $newSubmissions->count());
+    Log::debug('Latest submission: ', ['submission' => $latestSubmission]);
+
+    return response()->json($newSubmissions->count());
+}
+
+
+
+
 
 }

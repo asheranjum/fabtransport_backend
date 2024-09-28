@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,16 +17,23 @@ use Illuminate\Support\Facades\File;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    
+    
+    return Redirect::to('https://fabtransport.com.au');
+
+    // return view('welcome');
 });
 
 
 Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
     Artisan::call('route:clear');
+    Artisan::call('optimize');
 
   return 'done';
 });
+
+
 
 
 Route::get('/link-file', function () {
@@ -36,6 +44,8 @@ Route::get('/link-file', function () {
 });
 
 Route::get('admin/duplicate/{product}', 'App\Http\Controllers\ProductDuplicationController@duplicate')->name('voyager.products.duplicate');
+ Route::get('new-submissions', 'App\Http\Controllers\Api\V1\ContactController@checkNewSubmissions');
+// Route::post('/products', 'ProductController@store');
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();

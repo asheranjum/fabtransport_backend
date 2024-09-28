@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "beyondcode/laravel-websockets": "^2.0@beta",
         "guzzlehttp/guzzle": "^7.2",
         "kimoslim/simplify": "dev-master",
         "laravel/framework": "^9.19",

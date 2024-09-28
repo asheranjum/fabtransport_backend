@@ -229,6 +229,7 @@ return [
           'image/png',
           'image/gif',
           'image/bmp',
+          'image/avif',
           'video/mp4',
         ],
         //Path for media-manager. Relative to the filesystem.

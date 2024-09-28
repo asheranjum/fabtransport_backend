@@ -7,8 +7,10 @@ use Auth;
 use App\Models\ProductCategory;
 use App\ProductSubCategory;
 use App\TagProductPivot;
+use App\ProductVariation;
 use App\Tag;
 use Carbon\Carbon;
+use TCG\Voyager\Facades\Voyager;
 class Product extends Model
 {
 
@@ -58,6 +60,11 @@ class Product extends Model
 	{
 		return $this->belongsTo(ProductCategory::class);
 	}
+	
+    // public function category()
+    // {
+    //     return $this->belongsTo(Voyager::modelClass('ProductCategory'));
+    // }
 
 	public function subcategory()
 	{
@@ -82,6 +89,11 @@ class Product extends Model
         return $this->belongsToMany(Tag::class, 'tag_product_pivot', 'product_id', 'tag_id');
     }
 	
+	
+	public function variations()
+    {
+        return $this->hasMany(ProductVariation::class);
+    }
 	
 }
 

@@ -22,16 +22,16 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.', 'namespace' => '\App\\Http\\C
     Route::post('house-moving', ['uses' => 'BookingController@HouseMovingForm', 'as' => 'HouseMovingForm']);
     Route::post('contact-us', ['uses' => 'ContactController@ContactForm', 'as' => 'ContactForm']);
     Route::post('get-quote', ['uses' => 'QuoteController@GetQuoteForm', 'as' => 'GetQuoteForm']);
-
+    Route::get('new-submissions', 'ContactController@checkNewSubmissions');
     // Route::post('/dependent-dropdown', ['uses' => 'DependentDropdownController@index', 'as' => 'dropdown']);
     // Route::get('all-products', ['uses' => 'ProductsController@index', 'as' => 'allProducts']);
     // Route::get('tags-products', ['uses' => 'ProductsController@TagsProducts', 'as' => 'TagsProducts']);
     Route::get('product-reviews', ['uses' => 'ProductsController@HomeReviews', 'as' => 'HomeReviews']);
     // Route::get('single-product/{slug}', ['uses' => 'ProductsController@getProductDetail', 'as' => 'getProductDetail']);
-    // Route::get('get-category-products/{slug}', ['uses' => '\App\Http\Controllers\CategoryController@getCategoryProduct', 'as' => 'getCategoryProduct']);
     // Route::get('get-sub-category-products/{slug}', ['uses' => '\App\Http\Controllers\CategoryController@getSubCategoryProduct', 'as' => 'getSubCategoryProduct']);
     // Route::get('product-categories', ['uses' => '\App\Http\Controllers\CategoryController@getCategories', 'as' => 'getCategories']);
-    // Route::get('all-category-products', ['uses' => '\App\Http\Controllers\CategoryController@getProductsWithCategories', 'as' => 'getProductsWithCategories']);
+    // Route::get('get-category-products/{slug}', ['uses' => '\App\Http\Controllers\CategoryController@getCategoryProduct', 'as' => 'getCategoryProduct']);
+    Route::get('all-category-products', ['uses' => '\App\Http\Controllers\CategoryController@getProductsWithCategories', 'as' => 'getProductsWithCategories']);
     Route::get('shipping_cost/{code}', ['uses' => 'OrderController@getZipCodePrice', 'as' => 'getZipCodePrice']);
     // Route::get('get-payment-methods', ['uses' => 'OrderController@getPaymentMethod', 'as' => 'getPaymentMethod']);
     // Route::get('get-shipping-methods', ['uses' => 'OrderController@getShippingMethod', 'as' => 'getShippingMethod']);
@@ -61,6 +61,10 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.', 'namespace' => '\App\\Http\\C
         Route::get('user', 'AuthController@getUserData');
         Route::get('get-furniture-prodcuts', ['uses' => 'ProductsController@getFurnitureItems', 'as' => 'getFurnitureItems']);
         Route::get('get-bedding-prodcuts', ['uses' => 'ProductsController@getBeddingItems', 'as' => 'getBeddingItems']);
+        
+        Route::get('get-category-products/{slug}', ['uses' => '\App\Http\Controllers\CategoryController@getCategoryProduct', 'as' => 'getCategoryProduct']);
+        Route::get('product-categories', ['uses' => '\App\Http\Controllers\CategoryController@getCategories', 'as' => 'getCategories']);
+           Route::get('get-sub-category-products/{slug}', ['uses' => '\App\Http\Controllers\CategoryController@getSubCategoryProduct', 'as' => 'getSubCategoryProduct']);
         Route::post('update-profile', 'AuthController@updateProfile');
         Route::post('update-shipping-method', 'AuthController@updateShippingMethod');
         Route::get('get-shipping-method', 'AuthController@getShippingMethod');
