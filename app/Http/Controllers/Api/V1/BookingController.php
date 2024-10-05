@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\FlatPackAssembly;
 use App\Delivery;
 use App\HouseMoving;
-
+use PDF;
 use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
 use DB;
@@ -65,6 +65,12 @@ class BookingController extends Controller
 		$PostData->different_address = $request->different_address;
 		
 		$PostData->save();
+
+		// Generate PDFs
+		$pdf = Pdf::loadView('email.flatpackassemblyformMail', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
+
+		// Send email with the PDF attachment
+		\Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf,'Flat Pack Assembly Form','email.flatpackassemblyformMail'));
 
 
 		$result = ApiHelper::success('Success', $PostData);
@@ -133,7 +139,14 @@ class BookingController extends Controller
 
 		$PostData->save();
 
+		// Generate PDFs
+		$pdf = Pdf::loadView('email.deliveryformMail', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
 
+		// Send email with the PDF attachment
+		\Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf,'Delivery Form','email.deliveryformMail'));
+
+
+				
 		$result = ApiHelper::success('Success', $PostData);
 		return response()->json($result, 200);
 
@@ -192,6 +205,15 @@ class BookingController extends Controller
 		$PostData->different_address = $request->different_address;
 		
 		$PostData->save();
+		
+
+
+		// Generate PDFs
+		$pdf = Pdf::loadView('email.housemoving', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
+
+		// Send email with the PDF attachment
+		\Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf,'House Moving','email.housemoving'));
+
 
 
 		$result = ApiHelper::success('Success', $PostData);

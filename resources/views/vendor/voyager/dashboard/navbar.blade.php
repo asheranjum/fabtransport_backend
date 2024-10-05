@@ -82,7 +82,7 @@
 <!--    const notificationSound = new Audio('https://backend.fabtransport.com.au/notifications-sound-127856.mp3');-->
 <!--    let isSoundInitialized = false;-->
 
-    // Initialize sound on first user interaction
+    {{-- // Initialize sound on first user interaction --}}
 <!--    document.addEventListener('click', function initializeSound() {-->
 <!--        if (!isSoundInitialized) {-->
 <!--            notificationSound.play().then(() => {-->
@@ -103,9 +103,9 @@
 <!--            })-->
 <!--            .then(data => {-->
 <!--                console.log('aaaa',data)-->
-                    // Show toast notification
+                    {{-- // Show toast notification --}}
 <!--                    showToastNotification(data + ' Notification');-->
-                    // Play sound
+                    {{-- // Play sound --}}
 <!--                    if (isSoundInitialized) {-->
 <!--                        notificationSound.play().catch(err => console.error('Error playing sound:', err));-->
 <!--                    }-->
@@ -116,7 +116,7 @@
 <!--    }-->
 
 <!--    function showToastNotification(message) {-->
-        // Create a toast notification element (modify as needed for styling)
+        {{-- // Create a toast notification element (modify as needed for styling) --}}
 <!--        let toast = document.createElement('div');-->
 <!--        toast.textContent = message;-->
 <!--        toast.style.position = 'fixed';-->
@@ -129,13 +129,13 @@
 <!--        toast.style.zIndex = '1000';-->
 <!--        document.body.appendChild(toast);-->
 
-        // Remove the toast after a few seconds
+        {{-- // Remove the toast after a few seconds --}}
 <!--        setTimeout(() => {-->
 <!--            document.body.removeChild(toast);-->
 <!--        }, 5000);-->
 <!--    }-->
 
-    setInterval(checkForNotifications, 6000); // Poll every 10 seconds
+    {{-- setInterval(checkForNotifications, 6000); // Poll every 10 seconds --}}
 <!--});-->
 <!--</script>-->
 

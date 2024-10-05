@@ -9,9 +9,11 @@ use App\GetQuote;
 use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
 use DB;
+use Mail;
 use Validator;
 use Illuminate\Pagination\Paginator;
-
+use App\Mail\GetQuoteMail;
+use PDF;
 class QuoteController extends Controller
 {
 
@@ -39,17 +41,24 @@ class QuoteController extends Controller
 			return response()->json($result, 422);
 		}
 
-		$PostData = new GetQuote();
+		$postData = new GetQuote();
 
-		$PostData->name = $request->name;
-		$PostData->email = $request->email;
-		$PostData->service = $request->service;
-		$PostData->subject = $request->subject;
-		$PostData->quote = $request->quote;
+		$postData->name = $request->name;
+		$postData->email = $request->email;
+		$postData->service = $request->service;
+		$postData->subject = $request->subject;
+		$postData->quote = $request->quote;
 	
-		$PostData->save();
+		$postData->save();
 
-		$result = ApiHelper::success('Success', $PostData);
+
+		// Generate PDFs
+		$pdf = Pdf::loadView('email.getQuoteMail', compact('postData')); // create a Blade view `emails.quote` for the PDF content
+
+		// Send email with the PDF attachment
+		\Mail::to($request->email)->send(new \App\Mail\GetQuoteMail($postData, $pdf));
+
+		$result = ApiHelper::success('Success', []);
 		return response()->json($result, 200);
 
 	}

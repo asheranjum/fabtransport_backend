@@ -81,14 +81,12 @@ public function checkNewSubmissions(Request $request)
     ];
     
     
-      Log::debug('Last check: ' . $lastCheck);
-    Log::debug('New submissions count: ' . $newSubmissions->count());
-    Log::debug('Latest submission: ', ['submission' => $latestSubmission]);
+	// Log::debug('Last check: ' . $lastCheck);
+    // Log::debug('New submissions count: ' . $newSubmissions->count());
+    // Log::debug('Latest submission: ', ['submission' => $latestSubmission]);
 
     return response()->json($newSubmissions->count());
 }
-
-
 
 
 
