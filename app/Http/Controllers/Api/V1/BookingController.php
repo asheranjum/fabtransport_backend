@@ -22,7 +22,6 @@ use Illuminate\Pagination\Paginator;
 class BookingController extends Controller
 {
 
-
 // .......For FLat Pack Assembly ..........//
 
 	public function FlatPackAssemblyForm(Request $request)
@@ -85,7 +84,7 @@ class BookingController extends Controller
 
 	}
 
-	//.........For Delivery ...............//
+     //.........For Delivery ...............//
 
 	public function DeliveryForm(Request $request)
 	{
@@ -311,7 +310,6 @@ class BookingController extends Controller
 	   // Send email with the PDF attachment
 	   \Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf,'Fab Construction Form','email.fabconstructionformMail'));
 
-
 	   $result = ApiHelper::success('Success', $PostData);
 	   return response()->json($result, 200);
 
@@ -357,10 +355,10 @@ class BookingController extends Controller
 	   $PostData->save();
 
 	   // Generate PDFs
-	   $pdf = Pdf::loadView('email.ServiceCallFormformMail', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
+	   $pdf = Pdf::loadView('email.ServiceCallformMail', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
 
 	   // Send email with the PDF attachment
-	   \Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf,'Service CallForm Form','email.servicecallFormformMail'));
+	   \Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf,'Service CallForm Form','email.servicecallformMail'));
 
 	   $result = ApiHelper::success('Success', $PostData);
 	   return response()->json($result, 200);
