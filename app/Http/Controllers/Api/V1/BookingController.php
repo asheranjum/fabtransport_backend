@@ -8,6 +8,10 @@ use App\Http\Controllers\Controller;
 use App\FlatPackAssembly;
 use App\Delivery;
 use App\HouseMoving;
+use App\HandymanServices;
+use App\FabConstruction;
+use App\ServiceCall;
+
 use PDF;
 use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
@@ -17,6 +21,8 @@ use Illuminate\Pagination\Paginator;
 
 class BookingController extends Controller
 {
+
+// .......For FLat Pack Assembly ..........//
 
 	public function FlatPackAssemblyForm(Request $request)
 	{
@@ -34,7 +40,7 @@ class BookingController extends Controller
 			'phone' => 'required',
 			'city' => 'required',
 			'postal_code' => 'required',
-			
+
 			'different_name' => 'required',
 			'different_email' => 'required',
 			'different_address' => 'required',
@@ -77,6 +83,8 @@ class BookingController extends Controller
 		return response()->json($result, 200);
 
 	}
+
+     //.........For Delivery ...............//
 
 	public function DeliveryForm(Request $request)
 	{
@@ -152,6 +160,8 @@ class BookingController extends Controller
 
 	}
 
+   //.........For House Moving...............//
+
 	public function HouseMovingForm(Request $request)
 	{
 
@@ -206,18 +216,153 @@ class BookingController extends Controller
 		
 		$PostData->save();
 		
-
-
 		// Generate PDFs
-		$pdf = Pdf::loadView('email.housemoving', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
+		$pdf = Pdf::loadView('email.housemovingformMail', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
 
 		// Send email with the PDF attachment
-		\Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf,'House Moving','email.housemoving'));
-
-
+		\Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf,'House Moving','email.housemovingformMail'));
 
 		$result = ApiHelper::success('Success', $PostData);
 		return response()->json($result, 200);
 
 	}
-}
+
+
+   //.........For HandyMan Service...............//
+ 
+   public function HandymanServicesForm(Request $request)
+   {
+
+	   // return($request->all());
+	   $validator = Validator::make($request->all(), [
+
+		'name'=> 'required',
+		'email'=> 'required',
+		'phone'=> 'required',
+		'quote'=> 'required',
+		'image'=> 'required',
+
+	   ]);
+
+	   if ($validator->fails()) {
+		   $result = ApiHelper::validation_error('Validation Error', $validator->errors()->all());
+		   return response()->json($result, 422);
+	   }
+
+	   $PostData = new HandymanServices();
+	   
+	   $PostData->name = $request->name;
+	   $PostData->email = $request->email;
+	   $PostData->phone = $request->phone;
+	   $PostData->quote = $request->quote;
+	   $PostData->image = $request->image;
+
+	   $PostData->save();
+
+	   // Generate PDFs
+	   $pdf = Pdf::loadView('email.HandymanServicesformMail', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
+
+	   // Send email with the PDF attachment
+	   \Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf,'Handyman Services Form','email.handymanservicesformMail'));
+
+
+	   $result = ApiHelper::success('Success', $PostData);
+	   return response()->json($result, 200);
+
+   }
+
+    //.........Fab Construction...............//
+
+   public function FabConstructionForm(Request $request)
+   {
+
+	   // return($request->all());
+	   $validator = Validator::make($request->all(), [
+
+		'services'=> 'required',
+		'name'=> 'required',
+		'email'=> 'required',
+		'phone'=> 'required',
+		'quote'=> 'required',
+		'location'=> 'required',
+
+	   ]);
+
+	   if ($validator->fails()) {
+		   $result = ApiHelper::validation_error('Validation Error', $validator->errors()->all());
+		   return response()->json($result, 422);
+	   }
+
+	   $PostData = new FabConstruction();
+	   
+	   $PostData->services = $request->services;
+	   $PostData->name = $request->name;
+	   $PostData->email = $request->email;
+	   $PostData->phone = $request->phone;
+	   $PostData->quote = $request->quote;
+	   $PostData->location = $request->location;
+
+	   $PostData->save();
+
+	   // Generate PDFs
+	   $pdf = Pdf::loadView('email.FabConstructionformMail', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
+
+	   // Send email with the PDF attachment
+	   \Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf,'Fab Construction Form','email.fabconstructionformMail'));
+
+	   $result = ApiHelper::success('Success', $PostData);
+	   return response()->json($result, 200);
+
+   }
+
+    //.........For Service Call...............//
+
+   public function ServiceCallForm(Request $request)
+   {
+
+	   // return($request->all());
+	   $validator = Validator::make($request->all(), [
+
+		'name'=> 'required',
+		'location'=> 'required',
+		'issue'=> 'required',
+		'image'=> 'required',
+		'image1'=> 'required',
+		'image2'=> 'required',
+		'image3'=> 'required',
+		'image4'=> 'required',
+		'pdf'=> 'required',
+
+	   ]);
+
+	   if ($validator->fails()) {
+		   $result = ApiHelper::validation_error('Validation Error', $validator->errors()->all());
+		   return response()->json($result, 422);
+	   }
+
+	   $PostData = new ServiceCall();
+	   
+	   $PostData->name = $request->name;
+	   $PostData->location = $request->location;
+	   $PostData->issue = $request->issue;
+	   $PostData->image = $request->image;
+	   $PostData->image1 = $request->image1;
+	   $PostData->image2 = $request->image2;
+	   $PostData->image3 = $request->image3;
+	   $PostData->image4 = $request->image4;
+	   $PostData->pdf = $request->pdf;
+
+	   $PostData->save();
+
+	   // Generate PDFs
+	   $pdf = Pdf::loadView('email.ServiceCallformMail', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
+
+	   // Send email with the PDF attachment
+	   \Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf,'Service CallForm Form','email.servicecallformMail'));
+
+	   $result = ApiHelper::success('Success', $PostData);
+	   return response()->json($result, 200);
+
+    } 
+
+   }

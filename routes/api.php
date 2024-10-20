@@ -17,11 +17,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'v1', 'as' => 'api.v1.', 'namespace' => '\App\\Http\\Controllers\\Api\\V1\\'], function () {
 
-    Route::post('flat-pack-assembly', ['uses' => 'BookingController@FlatPackAssemblyForm', 'as' => 'FlatPackAssemblyForm']);
     Route::post('deliveries', ['uses' => 'BookingController@DeliveryForm', 'as' => 'DeliveryForm']);
+    Route::post('flat-pack-assembly', ['uses' => 'BookingController@FlatPackAssemblyForm', 'as' => 'FlatPackAssemblyForm']);
     Route::post('house-moving', ['uses' => 'BookingController@HouseMovingForm', 'as' => 'HouseMovingForm']);
+    Route::post('handyman-services', ['uses' => 'BookingController@HandymanServicesForm', 'as' => 'HandymanServicesForm']);
+    Route::post('fab-construction', ['uses' => 'BookingController@FabConstructionForm', 'as' => 'FabConstructionForm']);
+    Route::post('service-call', ['uses' => 'BookingController@ServiceCallForm', 'as' => 'ServiceCallForm']);
     Route::post('contact-us', ['uses' => 'ContactController@ContactForm', 'as' => 'ContactForm']);
     Route::post('get-quote', ['uses' => 'QuoteController@GetQuoteForm', 'as' => 'GetQuoteForm']);
+
     Route::get('new-submissions', 'ContactController@checkNewSubmissions');
     // Route::post('/dependent-dropdown', ['uses' => 'DependentDropdownController@index', 'as' => 'dropdown']);
     // Route::get('all-products', ['uses' => 'ProductsController@index', 'as' => 'allProducts']);
