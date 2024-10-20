@@ -32,7 +32,10 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.', 'namespace' => '\App\\Http\\C
     // Route::get('product-categories', ['uses' => '\App\Http\Controllers\CategoryController@getCategories', 'as' => 'getCategories']);
     // Route::get('get-category-products/{slug}', ['uses' => '\App\Http\Controllers\CategoryController@getCategoryProduct', 'as' => 'getCategoryProduct']);
     Route::get('all-category-products', ['uses' => '\App\Http\Controllers\CategoryController@getProductsWithCategories', 'as' => 'getProductsWithCategories']);
-    Route::get('shipping_cost/{code}', ['uses' => 'OrderController@getZipCodePrice', 'as' => 'getZipCodePrice']);
+    Route::post('shipping_cost', ['uses' => 'OrderController@getShippingRates', 'as' => 'getShippingRates']);
+    // Route::post('get-shipping-rates', ['uses' => 'OrderController@getShippingRates', 'as' => 'getShippingRates']);
+
+
     // Route::get('get-payment-methods', ['uses' => 'OrderController@getPaymentMethod', 'as' => 'getPaymentMethod']);
     // Route::get('get-shipping-methods', ['uses' => 'OrderController@getShippingMethod', 'as' => 'getShippingMethod']);
     // Route::post('make-order', ['uses' => 'OrderController@getOrder', 'as' => 'getOrder']);
