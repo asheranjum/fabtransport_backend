@@ -57,7 +57,8 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.', 'namespace' => '\App\\Http\\C
     // Route::get('slider', ['uses' => '\App\Http\Controllers\CategoryController@slider', 'as' => 'getCategories']);
 
 
-
+  Route::post('product-booking', ['uses' => 'BookingController@ProductBooking', 'as' => 'ProductBooking']);
+  Route::get('/booked-dates/{product_id}', ['uses' => 'BookingController@getBookedDates', 'as' => 'getBookedDates']);
 
     Route::get('get-my-orders/', ['uses' => 'AuthController@getMyOrders', 'as' => 'getMyOrders']);
 
@@ -71,12 +72,15 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.', 'namespace' => '\App\\Http\\C
         
         Route::get('get-category-products/{slug}', ['uses' => '\App\Http\Controllers\CategoryController@getCategoryProduct', 'as' => 'getCategoryProduct']);
         Route::get('product-categories', ['uses' => '\App\Http\Controllers\CategoryController@getCategories', 'as' => 'getCategories']);
-           Route::get('get-sub-category-products/{slug}', ['uses' => '\App\Http\Controllers\CategoryController@getSubCategoryProduct', 'as' => 'getSubCategoryProduct']);
+        Route::get('get-sub-category-products/{slug}', ['uses' => '\App\Http\Controllers\CategoryController@getSubCategoryProduct', 'as' => 'getSubCategoryProduct']);
         Route::post('update-profile', 'AuthController@updateProfile');
         Route::post('update-shipping-method', 'AuthController@updateShippingMethod');
         Route::get('get-shipping-method', 'AuthController@getShippingMethod');
         Route::get('get-my-orders/', ['uses' => 'AuthController@getMyOrders', 'as' => 'getMyOrders']);
         Route::post('change-passowrd/', ['uses' => 'AuthController@changePassowrd', 'as' => 'changePassowrd']);
+
+
+      
         
     });
 });
