@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Redirect;
 Route::get('/', function () {
     
     
-    return Redirect::to('https://fabtransport.com.au');
+    // return Redirect::to('https://fabtransport.com.au');
 
-    // return view('welcome');
+    return view('welcome');
 });
 
 

@@ -125,6 +125,9 @@
                     <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
                         Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
                     </div>
+
+
+                   {{-- <img src="{{ asset('storage/' . 'handyman-services/4SoyHcPdJjBLYkK2PtoYsjlTF6u5GYQJuMkQTmgC.png') }}" alt="Handyman Service Image"  />  --}}
                 </div>
             </div>
         </div>

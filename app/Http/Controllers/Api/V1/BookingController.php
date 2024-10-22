@@ -8,10 +8,12 @@ use App\Http\Controllers\Controller;
 use App\FlatPackAssembly;
 use App\Delivery;
 use App\HouseMoving;
-use App\HandymanServices;
+use App\HandymanService;
 use App\FabConstruction;
 use App\ServiceCall;
 use App\ProductBooking;
+use App\ProductMistake;
+use App\Product;
 
 use PDF;
 use App\Helpers\ApiHelper;
@@ -230,43 +232,46 @@ class BookingController extends Controller
 
 	public function HandymanServicesForm(Request $request)
 	{
-
-		// return($request->all());
+		// Validate incoming request
 		$validator = Validator::make($request->all(), [
-
 			'name' => 'required',
-			'email' => 'required',
+			'email' => 'required|email',
 			'phone' => 'required',
 			'quote' => 'required',
-			'image' => 'required',
-
+			'image' => 'required|mimes:jpeg,jpg,png,gif|max:2048', // Validate image with types and size limit
 		]);
-
+	
 		if ($validator->fails()) {
 			$result = ApiHelper::validation_error('Validation Error', $validator->errors()->all());
 			return response()->json($result, 422);
 		}
-
-		$PostData = new HandymanServices();
-
+	
+		// Save the data
+		$PostData = new HandymanService();
 		$PostData->name = $request->name;
 		$PostData->email = $request->email;
 		$PostData->phone = $request->phone;
 		$PostData->quote = $request->quote;
-		$PostData->image = $request->image;
-
+	
+		// Handle image upload using Laravel's Storage
+		if ($request->hasFile('image')) {
+			$image = $request->file('image');
+			$imagePath = $image->store('handyman-services', 'public'); // Store image in 'storage/app/public/handyman_services'
+			$PostData->image = $imagePath; // Store the path in the database
+		}
+	
 		$PostData->save();
-
-		// Generate PDFs
-		$pdf = Pdf::loadView('email.HandymanServicesformMail', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
-
-		// Send email with the PDF attachment
+	
+		// // Generate PDFs
+		$pdf = Pdf::loadView('email.HandymanServicesformMail', compact('PostData'));
+	
+		// // Send email with the PDF attachment
 		\Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf, 'Handyman Services Form', 'email.handymanservicesformMail'));
-
-
+	
 		$result = ApiHelper::success('Success', $PostData);
 		return response()->json($result, 200);
 	}
+	
 
 	//.........Fab Construction...............//
 
@@ -280,7 +285,6 @@ class BookingController extends Controller
 			'name' => 'required',
 			'email' => 'required',
 			'phone' => 'required',
-			'quote' => 'required',
 			'location' => 'required',
 
 		]);
@@ -296,7 +300,6 @@ class BookingController extends Controller
 		$PostData->name = $request->name;
 		$PostData->email = $request->email;
 		$PostData->phone = $request->phone;
-		$PostData->quote = $request->quote;
 		$PostData->location = $request->location;
 
 		$PostData->save();
@@ -315,50 +318,82 @@ class BookingController extends Controller
 
 	public function ServiceCallForm(Request $request)
 	{
-
-		// return($request->all());
+		// Validation rules
 		$validator = Validator::make($request->all(), [
-
 			'name' => 'required',
 			'location' => 'required',
 			'issue' => 'required',
-			'image' => 'required',
-			'image1' => 'required',
-			'image2' => 'required',
-			'image3' => 'required',
-			'image4' => 'required',
-			'pdf' => 'required',
-
+			'image' => 'required|mimes:jpeg,jpg,png|max:2048',  // Add mime types and size limit
+			'image1' => 'required|mimes:jpeg,jpg,png|max:2048',
+			'image2' => 'required|mimes:jpeg,jpg,png|max:2048',
+			'image3' => 'required|mimes:jpeg,jpg,png|max:2048',
+			'image4' => 'required|mimes:jpeg,jpg,png|max:2048',
+			'pdf' => 'required|mimes:pdf|max:10000', // Add mime type and size limit for PDF
 		]);
-
+	
+		// If validation fails
 		if ($validator->fails()) {
 			$result = ApiHelper::validation_error('Validation Error', $validator->errors()->all());
 			return response()->json($result, 422);
 		}
-
+	
+		// Create new record
 		$PostData = new ServiceCall();
-
 		$PostData->name = $request->name;
 		$PostData->location = $request->location;
 		$PostData->issue = $request->issue;
-		$PostData->image = $request->image;
-		$PostData->image1 = $request->image1;
-		$PostData->image2 = $request->image2;
-		$PostData->image3 = $request->image3;
-		$PostData->image4 = $request->image4;
-		$PostData->pdf = $request->pdf;
-
+	
+		// Handle image and PDF uploads
+		if ($request->hasFile('image')) {
+			$image = $request->file('image');
+			$imagePath = $image->store('service-call', 'public'); // Store image in 'storage/app/public/service-call'
+			$PostData->image = $imagePath; // Store path in the database
+		}
+	
+		if ($request->hasFile('image1')) {
+			$image1 = $request->file('image1');
+			$imagePath1 = $image1->store('service-call', 'public');
+			$PostData->image1 = $imagePath1;
+		}
+	
+		if ($request->hasFile('image2')) {
+			$image2 = $request->file('image2');
+			$imagePath2 = $image2->store('service-call', 'public');
+			$PostData->image2 = $imagePath2;
+		}
+	
+		if ($request->hasFile('image3')) {
+			$image3 = $request->file('image3');
+			$imagePath3 = $image3->store('service-call', 'public');
+			$PostData->image3 = $imagePath3;
+		}
+	
+		if ($request->hasFile('image4')) {
+			$image4 = $request->file('image4');
+			$imagePath4 = $image4->store('service-call', 'public');
+			$PostData->image4 = $imagePath4;
+		}
+	
+		if ($request->hasFile('pdf')) {
+			$pdfFile = $request->file('pdf');
+			$pdfPath = $pdfFile->store('service-call', 'public'); // Store PDF in 'storage/app/public/service-call'
+			$PostData->pdfpath = $pdfPath;
+		}
+	
+		// Save PostData
 		$PostData->save();
-
-		// Generate PDFs
-		$pdf = Pdf::loadView('email.ServiceCallformMail', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
-
+	
+		// Generate PDF for email
+		$pdf = Pdf::loadView('email.ServiceCallformMail', compact('PostData'));
+	
 		// Send email with the PDF attachment
 		\Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf, 'Service CallForm Form', 'email.servicecallformMail'));
-
+	
+		// Return success response
 		$result = ApiHelper::success('Success', $PostData);
 		return response()->json($result, 200);
 	}
+	
 
 
 	public function ProductBooking(Request $request)
@@ -380,6 +415,11 @@ class BookingController extends Controller
 			return response()->json($result, 422);
 		}
 
+		$product_details = Product::with('category:id,name')
+		->where('id', $request->product_id)
+		->first();
+
+
 		$PostData = new ProductBooking();
 
 		$PostData->user_id = $request->user_id;
@@ -389,12 +429,16 @@ class BookingController extends Controller
 		$PostData->address = $request->address;
 		$PostData->date = $request->date;
 		$PostData->save();
+		
+		$PostData->product_name = $product_details->name;
+		$PostData->category_name =  $product_details->category->name;
 
-		// // Generate PDFs
-		// $pdf = Pdf::loadView('email.ServiceCallformMail', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
 
-		// // Send email with the PDF attachment
-		// \Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf, 'Service CallForm Form', 'email.servicecallformMail'));
+		// Generate PDFs
+		$pdf = Pdf::loadView('email.productbookingMail', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
+
+		// Send email with the PDF attachment
+		\Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf, 'Product Booking Form', 'email.productbookingMail'));
 
 		$result = ApiHelper::success('Success', $PostData);
 		return response()->json($result, 200);
@@ -411,5 +455,48 @@ class BookingController extends Controller
 
         return response()->json($bookedDates);
     }
+
+
+
+	public function ProductMistake(Request $request)
+	{
+
+		// return($request->all());
+		$validator = Validator::make($request->all(), [
+
+			'product_id' => 'required',
+			'message' => 'required',
+		]);
+
+		if ($validator->fails()) {
+			$result = ApiHelper::validation_error('Validation Error', $validator->errors()->all());
+			return response()->json($result, 422);
+		}
+
+		$product_details = Product::with('category:id,name')
+		->where('id', $request->product_id)
+		->first();
+
+
+		$PostData = new ProductMistake();
+
+		$PostData->user_id = $request->user_id;
+		$PostData->product_id = $request->product_id;
+		$PostData->desc = $request->message;
+		$PostData->save();
+		
+		$PostData->product_name = $product_details->name;
+		$PostData->category_name =  $product_details->category->name;
+
+
+		// Generate PDFs
+		$pdf = Pdf::loadView('email.productMistakeMail', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
+
+		// Send email with the PDF attachment
+		\Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf, 'Product Mistake Form', 'email.productMistakeMail'));
+
+		$result = ApiHelper::success('Success', $PostData);
+		return response()->json($result, 200);
+	}
 
 }
