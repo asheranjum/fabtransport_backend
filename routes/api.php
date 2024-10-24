@@ -23,6 +23,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.', 'namespace' => '\App\\Http\\C
     Route::post('handyman-services', ['uses' => 'BookingController@HandymanServicesForm', 'as' => 'HandymanServicesForm']);
     Route::post('fab-construction', ['uses' => 'BookingController@FabConstructionForm', 'as' => 'FabConstructionForm']);
     Route::post('service-call', ['uses' => 'BookingController@ServiceCallForm', 'as' => 'ServiceCallForm']);
+    
     Route::post('contact-us', ['uses' => 'ContactController@ContactForm', 'as' => 'ContactForm']);
     Route::post('get-quote', ['uses' => 'QuoteController@GetQuoteForm', 'as' => 'GetQuoteForm']);
 
