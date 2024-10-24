@@ -37,7 +37,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h2>Booking Form</h2>
+            <h2>Mistake Form</h2>
         </div>
 
         <div class="content">
