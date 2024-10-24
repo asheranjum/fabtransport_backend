@@ -61,6 +61,8 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.', 'namespace' => '\App\\Http\\C
   Route::post('product-booking', ['uses' => 'BookingController@ProductBooking', 'as' => 'ProductBooking']);
   Route::post('product-mistake', ['uses' => 'BookingController@ProductMistake', 'as' => 'ProductMistake']);
   Route::get('/booked-dates/{product_id}', ['uses' => 'BookingController@getBookedDates', 'as' => 'getBookedDates']);
+  Route::get('/disabled-dates', ['uses' => 'BookingController@getDisabledDates', 'as' => 'getDisabledDates']);
+
 
     Route::get('get-my-orders/', ['uses' => 'AuthController@getMyOrders', 'as' => 'getMyOrders']);
 

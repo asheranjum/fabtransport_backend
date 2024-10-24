@@ -45,11 +45,11 @@
             <p><strong>Name:</strong> {{ $PostData->name }}</p>
             <p><strong>location:</strong> {{ $PostData->location }}</p>
             <p><strong>Issue:</strong> {{ $PostData->issue }}</p>
-            <p><strong>Image:</strong> <img src="{{ url('storage/{{ $PostData->image }}') }}" alt="Service Call Image1" /></p>
+            {{-- <p><strong>Image:</strong> <img src="{{ url('storage/{{ $PostData->image }}') }}" alt="Service Call Image1" /></p>
             <p><strong>Image1</strong> <img src="{{ url('storage/{{ $PostData->image1 }}') }}" alt="Service Call Image1" /></p>
             <p><strong>Image2</strong> <img src="{{ url('storage/{{ $PostData->image2 }}') }}" alt="Service Call Image2" /></p>
             <p><strong>Image3</strong> <img src="{{ url('storage/{{ $PostData->image3 }}') }}" alt="Service Call Image3" /></p>
-            <p><strong>Image4</strong> <img src="{{ url('storage/{{ $PostData->image4}}') }}" alt="Service Call Image4" /></p>
+            <p><strong>Image4</strong> <img src="{{ url('storage/{{ $PostData->image4}}') }}" alt="Service Call Image4" /></p> --}}
            
             <hr>
         </div>
