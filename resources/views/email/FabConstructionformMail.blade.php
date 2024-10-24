@@ -37,16 +37,20 @@
 <body>
     <div class="container">
         <div class="header">
-            <h2>New Contact Query</h2>
+            <h2>Fab Construction Form</h2>
         </div>
+
         <div class="content">
-             <p><strong>Name:</strong> {{ $postData->name }}</p>
-            <p><strong>Email:</strong> {{ $postData->email }}</p>
-            <p><strong>Service:</strong> {{ $postData->service }}</p>
-            <p><strong>Subject:</strong> {{ $postData->subject }}</p>
-            <p><strong>Quote:</strong> {{ $postData->quote }}</p>
+            <h3>Details</h3>
+            <p><strong>services:</strong> {{ $PostData->services }}</p>
+            <p><strong>Name:</strong> {{ $PostData->name }}</p>
+            <p><strong>Email:</strong> {{ $PostData->email }}</p>
+            <p><strong>Phone</strong> {{ $PostData->phone }}</p>
+            <p><strong>Location:</strong> {{ $PostData->location }}</p>
+           
+            <hr>
         </div>
-        
+    
         <div class="footer">
             <p>This is an automated message. Please do not reply directly to this email.</p>
         </div>

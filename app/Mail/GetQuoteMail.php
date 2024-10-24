@@ -12,16 +12,16 @@ use Illuminate\Queue\SerializesModels;
 class GetQuoteMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $PostData;
+    public $postData;
     public $pdf;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($PostData, $pdf)
+    public function __construct($postData, $pdf)
     {
-        $this->PostData = $PostData;
+        $this->postData = $postData;
         $this->pdf = $pdf;
     }
 
@@ -65,7 +65,7 @@ class GetQuoteMail extends Mailable
     {
         return $this->view('email.getQuoteMail') // make sure you have the correct view file
             ->subject('Your Quote Request')
-            ->with(['PostData' => $this->PostData]) // pass the postData variable to the view
+            ->with(['PostData' => $this->postData]) // pass the postData variable to the view
             ->attachData($this->pdf->output(), 'quote.pdf', [
                 'mime' => 'application/pdf',
             ]);

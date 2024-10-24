@@ -136,6 +136,40 @@ class OrderController extends Controller
 		return response()->json($result, 200);
 	}
 
+
+
+	public function getShippingRates(Request $request) {
+		// Ensure the Sanctum middleware is applied to this route
+		
+		// Authenticate the user via Sanctum token
+		$user = Auth::guard('sanctum')->user(); // Sanctum authentication
+		
+		if (!$user) {
+			return response()->json(['error' => 'Unauthorized'], 401);
+		}
+	
+		// Fetch vendor's role from the authenticated user
+		$vendorRoleId = $user->role_id;
+	
+		// Get the postal code from the request
+		
+		$postalCode = $request->zip_code;
+
+		
+		// Fetch shipping rates based on the vendor's role and postal code
+		$shippingRates = ShippingPostcode::where('role_id', $vendorRoleId)
+										  ->where('code', $postalCode)
+										  ->with('category')
+										  ->first();
+	
+		$result = ApiHelper::success('Shipping Cost', $shippingRates);
+
+		return response()->json($result, 200);
+
+	}
+	
+
+
 	public  function getPaymentMethod()
 	{
 

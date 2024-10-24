@@ -37,16 +37,23 @@
 <body>
     <div class="container">
         <div class="header">
-            <h2>New Contact Query</h2>
+            <h2>Service Call Form Form</h2>
         </div>
+
         <div class="content">
-             <p><strong>Name:</strong> {{ $postData->name }}</p>
-            <p><strong>Email:</strong> {{ $postData->email }}</p>
-            <p><strong>Service:</strong> {{ $postData->service }}</p>
-            <p><strong>Subject:</strong> {{ $postData->subject }}</p>
-            <p><strong>Quote:</strong> {{ $postData->quote }}</p>
+            <h3>Details</h3>
+            <p><strong>Name:</strong> {{ $PostData->name }}</p>
+            <p><strong>location:</strong> {{ $PostData->location }}</p>
+            <p><strong>Issue:</strong> {{ $PostData->issue }}</p>
+            <p><strong>Image:</strong> <img src="{{ url('storage/{{ $PostData->image }}') }}" alt="Service Call Image1" /></p>
+            <p><strong>Image1</strong> <img src="{{ url('storage/{{ $PostData->image1 }}') }}" alt="Service Call Image1" /></p>
+            <p><strong>Image2</strong> <img src="{{ url('storage/{{ $PostData->image2 }}') }}" alt="Service Call Image2" /></p>
+            <p><strong>Image3</strong> <img src="{{ url('storage/{{ $PostData->image3 }}') }}" alt="Service Call Image3" /></p>
+            <p><strong>Image4</strong> <img src="{{ url('storage/{{ $PostData->image4}}') }}" alt="Service Call Image4" /></p>
+           
+            <hr>
         </div>
-        
+    
         <div class="footer">
             <p>This is an automated message. Please do not reply directly to this email.</p>
         </div>
