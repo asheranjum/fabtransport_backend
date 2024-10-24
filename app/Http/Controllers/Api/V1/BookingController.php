@@ -14,6 +14,7 @@ use App\ServiceCall;
 use App\ProductBooking;
 use App\ProductMistake;
 use App\Product;
+use App\DisabledDate;
 
 use PDF;
 use App\Helpers\ApiHelper;
@@ -498,5 +499,16 @@ class BookingController extends Controller
 		$result = ApiHelper::success('Success', $PostData);
 		return response()->json($result, 200);
 	}
+
+
+
+	public function getDisabledDates()
+    {
+        $disabledDates = DisabledDate::get(['disabled_date','reason']);
+       
+		$result = ApiHelper::success('Success', $disabledDates);
+		return response()->json($result, 200);
+
+    }
 
 }
