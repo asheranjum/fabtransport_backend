@@ -1,0 +1,26 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - main  # Replace "main" with your branch if different
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to cPanel
+        env:
+          DEPLOY_SERVER: "test.indigofur.com.au"  # Replace with your cPanel domain
+          DEPLOY_PATH: "/public_html/test.indigofur.com.au"  # Set the correct deployment folder
+          SSH_PRIVATE_KEY: ${{ secrets.CPANEL_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "$DEPLOY_SERVER" >> ~/.ssh/known_hosts
+          rsync -avz --delete . l405v2pekias@${DEPLOY_SERVER}:${DEPLOY_PATH}
