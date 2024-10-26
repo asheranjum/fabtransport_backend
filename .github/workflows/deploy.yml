@@ -16,7 +16,7 @@ jobs:
       - name: Set up SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.CPANEL_SSH_KEY }}
-          DEPLOY_SERVER: "indigofur.com.au"  # Your cPanel domain
+          DEPLOY_SERVER: "indigofur.com"  # Your cPanel domain
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
@@ -25,8 +25,8 @@ jobs:
 
       - name: Deploy via rsync
         env:
-          DEPLOY_SERVER: "indigofur.com.au"  # Ensure this matches the previous step
-          DEPLOY_PATH: "/public_html/test.indigofur.com.au"  # Deployment folder on cPanel
-          USERNAME: "l405v2pekias"  # Replace with your cPanel username
+          DEPLOY_SERVER: "indigofur.com"  # Ensure this matches the previous step
+          DEPLOY_PATH: "public_html/test.indigofur.com.au"  # Deployment folder on cPanel
+          USERNAME: " "  # Replace with your cPanel username
         run: |
           rsync -avz --delete -e "ssh -i ~/.ssh/id_rsa" . ${USERNAME}@${DEPLOY_SERVER}:${DEPLOY_PATH}
