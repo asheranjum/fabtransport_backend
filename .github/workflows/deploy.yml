@@ -15,7 +15,7 @@ jobs:
 
       - name: Deploy to cPanel
         env:
-          DEPLOY_SERVER: "test.indigofur.com.au"  # Your cPanel domain
+          DEPLOY_SERVER: "indigofur.com.au"  # Your cPanel domain
           DEPLOY_PATH: "/public_html/test.indigofur.com.au"  # Correct deployment folder path
           SSH_PRIVATE_KEY: ${{ secrets.CPANEL_SSH_KEY }}
         run: |
