@@ -25,8 +25,8 @@ jobs:
 
       - name: Deploy via rsync
         env:
-          DEPLOY_SERVER: "indigofur.com.au"
+          DEPLOY_SERVER: "indigofur.com.au"  # Ensure this matches the previous step
           DEPLOY_PATH: "/public_html/test.indigofur.com.au"  # Deployment folder on cPanel
           USERNAME: "l405v2pekias"  # Replace with your cPanel username
         run: |
-          rsync -avz --delete -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" . ${USERNAME}@${DEPLOY_SERVER}:${DEPLOY_PATH}
+          rsync -avz --delete -e "ssh -i ~/.ssh/id_rsa" . ${USERNAME}@${DEPLOY_SERVER}:${DEPLOY_PATH}
