@@ -3,7 +3,7 @@ name: Deploy to cPanel
 on:
   push:
     branches:
-      - main
+      - main  # Deploy on push to the main branch
 
 jobs:
   deploy:
@@ -13,21 +13,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Deploy to cPanel
+      - name: Set up SSH
         env:
-          DEPLOY_SERVER: "indigofur.com.au"
-          DEPLOY_PATH: "/public_html/test.indigofur.com.au"
           SSH_PRIVATE_KEY: ${{ secrets.CPANEL_SSH_KEY }}
+          DEPLOY_SERVER: "indigofur.com.au"  # Your cPanel domain
         run: |
-          # Set up SSH key
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          
-          # Debug: Verify the key is loaded correctly
-          ssh-keygen -y -f ~/.ssh/id_rsa || echo "Failed to load SSH key"
-          
           ssh-keyscan -H "$DEPLOY_SERVER" >> ~/.ssh/known_hosts
-          
-          # Deploy with rsync
-          rsync -avz --delete --exclude='.git' . l405v2pekias@${DEPLOY_SERVER}:${DEPLOY_PATH}
+
+      - name: Deploy via rsync
+        env:
+          DEPLOY_PATH: "/public_html/test.indigofur.com.au"  # Deployment folder on cPanel
+          USERNAME: "l405v2pekias"  # Replace with your cPanel username
+        run: |
+          rsync -avz --delete -e "ssh -i ~/.ssh/id_rsa" . ${USERNAME}@${DEPLOY_SERVER}:${DEPLOY_PATH}
