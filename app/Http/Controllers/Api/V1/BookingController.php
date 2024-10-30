@@ -15,6 +15,7 @@ use App\ProductBooking;
 use App\ProductMistake;
 use App\Product;
 use App\DisabledDate;
+use App\MissingProduct
 
 use PDF;
 use App\Helpers\ApiHelper;
@@ -169,23 +170,19 @@ class BookingController extends Controller
 
 		$validator = Validator::make($request->all(), [
 
+			'address' => 'required',
+			'subrub' => 'required',
+			'postal_code' => 'required',
+			'email' => 'required',
+			'phone' => 'required',
+			'name' => 'required',
 			'moving_from_location' => 'required',
 			'moving_to_location' => 'required',
 			'moving_from' => 'required',
 			'moving_to' => 'required',
 			'bedrooms' => 'required',
-			'other_rooms' => 'required',
+			'other_items' => 'required',
 			'date' => 'required',
-			'name' => 'required',
-			'email' => 'required',
-			'phone' => 'required',
-			'city' => 'required',
-			'address' => 'required',
-			'postal_code' => 'required',
-
-			'different_name' => 'required',
-			'different_email' => 'required',
-			'different_address' => 'required',
 
 		]);
 
@@ -197,24 +194,19 @@ class BookingController extends Controller
 
 		$PostData = new HouseMoving();
 
+		$PostData->address = $request->address;
+		$PostData->subrub = $request->subrub;
+		$PostData->postal_code = $request->postal_code;
+		$PostData->email = $request->email;
+		$PostData->phone = $request->phone;
+		$PostData->name = $request->name;
 		$PostData->moving_from_location = $request->moving_from_location;
 		$PostData->moving_to_location = $request->moving_to_location;
 		$PostData->moving_from = $request->moving_from;
 		$PostData->moving_to = $request->moving_to;
 		$PostData->bedrooms = $request->bedrooms;
-		$PostData->other_rooms = $request->other_rooms;
-		$PostData->specialty_item = $request->specialty_item;
+		$PostData->other_items = $request->other_items;
 		$PostData->date = $request->date;
-		$PostData->name = $request->name;
-		$PostData->email = $request->email;
-		$PostData->phone = $request->phone;
-		$PostData->city = $request->city;
-		$PostData->postal_code = $request->postal_code;
-		$PostData->address = $request->address;
-
-		$PostData->different_name = $request->different_name;
-		$PostData->different_email = $request->different_email;
-		$PostData->different_address = $request->different_address;
 
 		$PostData->save();
 
@@ -227,6 +219,7 @@ class BookingController extends Controller
 		$result = ApiHelper::success('Success', $PostData);
 		return response()->json($result, 200);
 	}
+
 
 
 	//.........For HandyMan Service...............//
@@ -395,8 +388,9 @@ class BookingController extends Controller
 		return response()->json($result, 200);
 	}
 	
-
-
+	//.........Product Booking ...............//
+    
+        
 	public function ProductBooking(Request $request)
 	{
 
@@ -445,7 +439,7 @@ class BookingController extends Controller
 		return response()->json($result, 200);
 	}
 
-
+ 
 
 	public function getBookedDates($product_id)
     {
@@ -457,7 +451,17 @@ class BookingController extends Controller
         return response()->json($bookedDates);
     }
 
+	public function getDisabledDates()
+    {
+        $disabledDates = DisabledDate::get(['disabled_date','reason']);
+       
+		$result = ApiHelper::success('Success', $disabledDates);
+		return response()->json($result, 200);
 
+    }
+
+
+	//.........Product Mistake ...............//
 
 	public function ProductMistake(Request $request)
 	{
@@ -501,14 +505,48 @@ class BookingController extends Controller
 	}
 
 
+	//......... Missing Product ...............//
 
-	public function getDisabledDates()
-    {
-        $disabledDates = DisabledDate::get(['disabled_date','reason']);
-       
-		$result = ApiHelper::success('Success', $disabledDates);
+	public function MissingProduct(Request $request)
+	{
+
+		// return($request->all());
+		$validator = Validator::make($request->all(), [
+            'user_id' => 'required'
+			'product_name' => 'required',
+			'supplier_name' => 'required',
+		]);
+
+		if ($validator->fails()) {
+			$result = ApiHelper::validation_error('Validation Error', $validator->errors()->all());
+			return response()->json($result, 422);
+		}
+
+		$product_details = Product::with('category:id,name')
+		->where('id', $request->product_id)
+		->first();
+
+
+		$PostData = new ProductMistake();
+
+		$PostData->user_id = $request->user_id;
+		$PostData->product_name = $request->product_name;
+		$PostData->supplier_name = $request->supplier_name;
+		$PostData->save();
+		
+		$PostData->product_name = $product_details->name;
+		$PostData->category_name =  $product_details->category->name;
+
+
+		// Generate PDFs
+		$pdf = Pdf::loadView('email.missingProductMail', compact('PostData')); // create a Blade view `emails.quote` for the PDF content
+
+		// Send email with the PDF attachment
+		\Mail::to(env('ADMIN_EMAIL'))->send(new \App\Mail\FormsAttachmentsMail($PostData, $pdf, 'Missing Product Form', 'email.missingProductMail'));
+
+		$result = ApiHelper::success('Success', $PostData);
 		return response()->json($result, 200);
+	}
 
-    }
 
 }

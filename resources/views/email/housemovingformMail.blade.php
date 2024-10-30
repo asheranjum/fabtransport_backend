@@ -41,34 +41,27 @@
         </div>
 
        <div class="content">
+
+       <h3>Contact Information</h3>
+
+            <p><strong>Email:</strong> {{ $PostData->email }}</p>
+            <p><strong>Phone:</strong> {{ $PostData->phone }}</p>
+            <p><strong>Subrub:</strong> {{ $PostData->subrub }}</p>
+            <p><strong>Postal Code:</strong> {{ $PostData->postal_code }}</p>
+            <p><strong>Address:</strong> {{ $PostData->address }}</p>
+
+            <hr>
+
             <h3>Moving Details</h3>
             <p><strong>Moving From Location:</strong> {{ $PostData->moving_from_location }}</p>
             <p><strong>Moving To Location:</strong> {{ $PostData->moving_to_location }}</p>
             <p><strong>Moving From:</strong> {{ $PostData->moving_from }}</p>
             <p><strong>Moving To:</strong> {{ $PostData->moving_to }}</p>
             <p><strong>Bedrooms:</strong> {{ $PostData->bedrooms }}</p>
-            <p><strong>Other Rooms:</strong> {{ $PostData->other_rooms }}</p>
-            @if($PostData->specialty_item)
-            <p><strong>Specialty Item:</strong> {{ $PostData->specialty_item }}</p>
-            @endif
+            <p><strong>Other Items:</strong> {{ $PostData->other_items }}</p>
             <p><strong>Moving Date:</strong> {{ $PostData->date }}</p>
-
+            
             <hr>
-
-            <h3>Contact Information</h3>
-            <p><strong>Name:</strong> {{ $PostData->name }}</p>
-            <p><strong>Email:</strong> {{ $PostData->email }}</p>
-            <p><strong>Phone:</strong> {{ $PostData->phone }}</p>
-            <p><strong>City:</strong> {{ $PostData->city }}</p>
-            <p><strong>Postal Code:</strong> {{ $PostData->postal_code }}</p>
-            <p><strong>Address:</strong> {{ $PostData->address }}</p>
-
-            <hr>
-
-            <h3>Alternative Contact Information</h3>
-            <p><strong>Name:</strong> {{ $PostData->different_name }}</p>
-            <p><strong>Email:</strong> {{ $PostData->different_email }}</p>
-            <p><strong>Address:</strong> {{ $PostData->different_address }}</p>
 
         </div>
 

@@ -23,7 +23,6 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.', 'namespace' => '\App\\Http\\C
     Route::post('handyman-services', ['uses' => 'BookingController@HandymanServicesForm', 'as' => 'HandymanServicesForm']);
     Route::post('fab-construction', ['uses' => 'BookingController@FabConstructionForm', 'as' => 'FabConstructionForm']);
     Route::post('service-call', ['uses' => 'BookingController@ServiceCallForm', 'as' => 'ServiceCallForm']);
-    
     Route::post('contact-us', ['uses' => 'ContactController@ContactForm', 'as' => 'ContactForm']);
     Route::post('get-quote', ['uses' => 'QuoteController@GetQuoteForm', 'as' => 'GetQuoteForm']);
 
@@ -60,9 +59,9 @@ Route::group(['prefix' => 'v1', 'as' => 'api.v1.', 'namespace' => '\App\\Http\\C
 
   Route::post('product-booking', ['uses' => 'BookingController@ProductBooking', 'as' => 'ProductBooking']);
   Route::post('product-mistake', ['uses' => 'BookingController@ProductMistake', 'as' => 'ProductMistake']);
-  Route::get('/booked-dates/{product_id}', ['uses' => 'BookingController@getBookedDates', 'as' => 'getBookedDates']);
-  Route::get('/disabled-dates', ['uses' => 'BookingController@getDisabledDates', 'as' => 'getDisabledDates']);
+  Route::post('missing-product', ['uses' => 'BookingController@MissingProduct', 'as' => 'MissingProduct']);
 
+  Route::get('/booked-dates/{product_id}', ['uses' => 'BookingController@getBookedDates', 'as' => 'getBookedDates']);
 
     Route::get('get-my-orders/', ['uses' => 'AuthController@getMyOrders', 'as' => 'getMyOrders']);
 
